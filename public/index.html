@@ -44,11 +44,26 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .btn-primary { font-family: 'Bangers', cursive; font-size: clamp(1.2rem,3vw,1.6rem); letter-spacing: 3px; background: var(--gold); color: var(--ink); border: 4px solid var(--ink); padding: 0.75rem 2.5rem; border-radius: 4px; cursor: pointer; box-shadow: 5px 5px 0 var(--ink); transition: transform 0.1s, box-shadow 0.1s; }
 .btn-primary:hover { transform: translate(-2px,-2px); box-shadow: 7px 7px 0 var(--ink); }
 
+/* ═══ MODAL NOMBRE ═══ */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.85); display: none; align-items: center; justify-content: center; z-index: 1000; }
+.modal-overlay.show { display: flex; }
+.modal-box { background: var(--paper); color: var(--ink); padding: 2rem; border-radius: 12px; text-align: center; max-width: 400px; width: 90%; box-shadow: 0 20px 60px rgba(0,0,0,0.5); animation: modalPop 0.3s ease; }
+@keyframes modalPop { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.modal-title { font-family: 'Bangers', cursive; font-size: 1.8rem; color: var(--ink); letter-spacing: 2px; margin-bottom: 0.5rem; }
+.modal-desc { font-size: 1rem; margin-bottom: 0.3rem; }
+.modal-question { font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--orange); margin-bottom: 1rem; }
+.modal-input { width: 100%; padding: 0.8rem; font-size: 1.2rem; border: 3px solid var(--ink); border-radius: 8px; text-align: center; font-family: 'Comic Neue', cursive; margin-bottom: 1rem; }
+.modal-input:focus { outline: none; border-color: var(--gold); }
+.modal-btn { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; background: var(--gold); color: var(--ink); border: 3px solid var(--ink); padding: 0.7rem 2rem; border-radius: 8px; cursor: pointer; box-shadow: 4px 4px 0 var(--ink); transition: transform 0.1s; }
+.modal-btn:hover { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+
 /* ═══ MAP ═══ */
 #screen-map { align-items: center; padding: 1.5rem 1rem; position: relative; overflow: hidden; }
 #screen-map::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 70%, rgba(247,201,72,0.08) 0%, transparent 50%); }
 .map-title { font-family: 'Bangers', cursive; font-size: clamp(2rem,6vw,3.5rem); color: var(--gold); letter-spacing: 4px; text-shadow: 4px 4px 0 var(--orange); text-align: center; margin-bottom: 0.3rem; position: relative; z-index: 2; }
-.map-subtitle { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-align: center; margin-bottom: 2rem; position: relative; z-index: 2; }
+.map-subtitle { font-family: 'Space Mono', monospace; font-size: 0.75rem; color: rgba(255,255,255,0.5); letter-spacing: 2px; text-align: center; margin-bottom: 0.5rem; position: relative; z-index: 2; }
+.player-greeting { font-family: 'Bangers', cursive; font-size: 1rem; color: var(--gold); letter-spacing: 2px; text-align: center; margin-bottom: 1.5rem; position: relative; z-index: 2; }
+.player-greeting { font-family: 'Bangers', cursive; font-size: 1.1rem; color: var(--gold); letter-spacing: 2px; text-align: center; margin-bottom: 1rem; position: relative; z-index: 2; }
 .chapters-path { display: flex; flex-direction: column; gap: 1rem; width: 100%; max-width: 600px; position: relative; z-index: 2; }
 .path-line { width: 3px; height: 20px; background: rgba(255,255,255,0.15); margin: 0 auto; border-radius: 2px; }
 .chapter-node { display: flex; align-items: center; gap: 1rem; background: rgba(255,255,255,0.04); border: 2px solid rgba(255,255,255,0.12); border-radius: 12px; padding: 1rem 1.2rem; cursor: pointer; transition: all 0.2s; }
@@ -449,7 +464,18 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
         <div class="step-row"><span class="step-icon">🏆</span><span>¡Desbloquea el siguiente capítulo!</span></div>
       </div>
     </div>
-    <button class="btn-primary" onclick="goTo('screen-map')">¡COMENZAR LA AVENTURA! ⚡</button>
+    <button class="btn-primary" onclick="startGame()">¡COMENZAR LA AVENTURA! ⚡</button>
+  </div>
+</div>
+
+<!-- ═══════════════ MODAL NOMBRE ═══════════════ -->
+<div class="modal-overlay" id="modal-name">
+  <div class="modal-box">
+    <div class="modal-title">🎮 ¡Bienvenido, Aventurero!</div>
+    <p class="modal-desc">Antes de comenzar, cuéntame...</p>
+    <p class="modal-question">¿Cómo te llamas?</p>
+    <input type="text" id="player-name-input" class="modal-input" placeholder="Tu nombre aquí..." maxlength="20" autocomplete="off">
+    <button class="modal-btn" onclick="saveNameAndStart()">¡EMPEZAR! ⚡</button>
   </div>
 </div>
 
@@ -457,6 +483,7 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 <div class="screen" id="screen-map">
   <div class="map-title">MAPA DEL VIAJE</div>
   <div class="map-subtitle">TU DIPLOMA BITCOIN — 5 CAPÍTULOS</div>
+  <div class="player-greeting" id="player-greeting"></div>
   <div class="chapters-path" id="chapters-path"></div>
   <div class="map-progress">
     <div class="map-progress-label" id="progress-label">PROGRESO: 0 / 5 CAPÍTULOS</div>
@@ -569,6 +596,7 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 // ═══════════════════════════════════════════════════
 // STATE
 // ═══════════════════════════════════════════════════
+let playerName = '';
 let currentChapter = 0;
 let currentPage = 0;
 let completedChapters = new Set();
@@ -578,6 +606,55 @@ let searchLives = 3;
 let searchObjectsFound = 0;
 let foundObjects = [];
 let searchMarkers = [];
+
+// ═══════════════════════════════════════════════════
+// LOCALSTORAGE
+// ═══════════════════════════════════════════════════
+function saveProgress() {
+  const data = {
+    playerName: playerName,
+    completedChapters: Array.from(completedChapters)
+  };
+  localStorage.setItem('bitcoinGame', JSON.stringify(data));
+}
+
+function loadProgress() {
+  const saved = localStorage.getItem('bitcoinGame');
+  if (saved) {
+    const data = JSON.parse(saved);
+    playerName = data.playerName || '';
+    completedChapters = new Set(data.completedChapters || []);
+    return true;
+  }
+  return false;
+}
+
+function startGame() {
+  if (loadProgress() && playerName) {
+    // Ya tiene nombre guardado, ir directo al mapa
+    goTo('screen-map');
+  } else {
+    // Mostrar modal para pedir nombre
+    document.getElementById('modal-name').classList.add('show');
+    document.getElementById('player-name-input').focus();
+  }
+}
+
+function saveNameAndStart() {
+  const input = document.getElementById('player-name-input');
+  const name = input.value.trim();
+  
+  if (!name) {
+    input.style.borderColor = 'var(--red)';
+    input.placeholder = '¡Escribe tu nombre!';
+    return;
+  }
+  
+  playerName = name;
+  saveProgress();
+  document.getElementById('modal-name').classList.remove('show');
+  goTo('screen-map');
+}
 
 // ═══════════════════════════════════════════════════
 // CHAPTER DATA
@@ -991,6 +1068,12 @@ const chapters = [
 // RENDER MAP
 // ═══════════════════════════════════════════════════
 function renderMap() {
+  // Mostrar saludo personalizado
+  const greeting = document.getElementById('player-greeting');
+  if (greeting) {
+    greeting.textContent = playerName ? `¡Hola, ${playerName}! 🎮` : '';
+  }
+  
   const path = document.getElementById('chapters-path');
   path.innerHTML = '';
   const total = chapters.length;
@@ -1143,6 +1226,7 @@ function checkAnswer(btn, isCorrect) {
         startSearch();
       } else {
         completedChapters.add(currentChapter);
+        saveProgress();
         launchConfetti();
         renderVictory();
         goTo('screen-victory');
@@ -1339,6 +1423,7 @@ function handleSearchClick(event) {
       updateSearchUI();
       setTimeout(() => {
         completedChapters.add(currentChapter);
+        saveProgress();
         launchConfetti();
         renderVictory();
         goTo('screen-victory');
