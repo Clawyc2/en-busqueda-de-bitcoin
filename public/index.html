@@ -1622,16 +1622,7 @@ function clearSearchMarkers() {
 }
 
 function nextSearchObject() {
-  const ch = chapters[currentChapter];
-  
-  // Si ya se encontraron todos los objetos, ir a victoria
-  if (searchObjectsFound >= ch.searchObjects.length) {
-    completedChapters.add(currentChapter);
-    saveProgress();
-    launchConfetti();
-    renderVictory();
-    goTo('screen-victory');
-  }
+  goToQuestion();
 }
 
 // Init
