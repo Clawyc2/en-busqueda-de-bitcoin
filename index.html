@@ -319,13 +319,12 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .scene-header { width:100%; max-width:900px; display:flex; align-items:center; justify-content:space-between; margin-bottom:0.6rem; flex-wrap:wrap; gap:0.5rem; }
 .scene-title { font-family:'Bangers',cursive; font-size:1.4rem; color:var(--gold); letter-spacing:2px; }
 .objects-counter { font-family:'Space Mono',monospace; font-size:0.8rem; color:white; background:rgba(255,255,255,0.1); padding:0.3rem 0.7rem; border-radius:4px; border:1px solid rgba(255,255,255,0.15); }
-.attempts-counter { font-family:'Space Mono',monospace; font-size:0.8rem; color:white; background:rgba(220,38,38,0.2); padding:0.3rem 0.7rem; border-radius:4px; border:1px solid rgba(220,38,38,0.4); }
 .scene-mission { font-size:0.85rem; color:rgba(255,255,255,0.65); background:rgba(247,201,72,0.08); border:1px solid rgba(247,201,72,0.25); padding:0.5rem 1rem; border-radius:4px; width:100%; max-width:900px; margin-bottom:0.7rem; text-align:center; }
 .scene-wrapper { position:relative; width:100%; max-width:900px; border:4px solid var(--ink); box-shadow:0 0 40px rgba(247,201,72,0.12); overflow:hidden; border-radius:4px; cursor:crosshair; }
 .room { width:100%; min-height:380px; position:relative; overflow:hidden; }
 .deco { position:absolute; z-index:5; pointer-events:none; }
-.hidden-obj { position:absolute; cursor:pointer; transition:filter 0.2s; z-index:20; user-select:none; }
-/* REMOVIDO: hover que ilumina los objetos */
+.hidden-obj { position:absolute; cursor:pointer; transition:transform 0.2s,filter 0.2s; z-index:20; user-select:none; }
+/* REMOVIDO: hover que revela objetos */
 .hidden-obj.found { filter:drop-shadow(0 0 20px #4ade80) brightness(1.5); animation:foundPop 0.5s ease; pointer-events:none; }
 @keyframes foundPop { 0%{transform:scale(1)} 40%{transform:scale(1.3)} 100%{transform:scale(1.1)} }
 .objects-pane { width:100%; max-width:900px; margin-top:0.7rem; display:flex; gap:0.5rem; flex-wrap:wrap; }
@@ -335,6 +334,7 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .obj-item .obj-check { margin-left:auto; opacity:0; transition:opacity 0.3s; }
 .obj-item.collected .obj-check { opacity:1; }
 
+/* ═══ VICTORY ═══ */
 /* ═══ GAME OVER ═══ */
 #screen-gameover { background:var(--ink); align-items:center; justify-content:center; padding:2rem; }
 .gameover-content { text-align:center; max-width:500px; }
@@ -343,9 +343,9 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .gameover-message { color:rgba(255,255,255,0.7); font-size:1rem; line-height:1.6; margin-bottom:1.5rem; }
 .btn-retry { font-family:'Bangers',cursive; font-size:1.3rem; letter-spacing:2px; background:var(--orange); color:white; border:3px solid var(--ink); padding:0.6rem 1.5rem; border-radius:4px; cursor:pointer; box-shadow:4px 4px 0 var(--ink); margin:0.5rem; transition:transform 0.1s; }
 .btn-retry:hover { transform:translate(-2px,-2px); box-shadow:6px 6px 0 var(--ink); }
-.btn-map { font-family:'Bangers',cursive; font-size:1.1rem; letter-spacing:2px; background:transparent; color:var(--gold); border:2px solid var(--gold); padding:0.5rem 1.2rem; border-radius:4px; cursor:pointer; margin:0.5rem; }
+.attempts-display { font-family:'Space Mono',monospace; font-size:1.2rem; margin-bottom:0.5rem; }
+.wrong-flash { position:fixed; inset:0; background:rgba(220,38,38,0.2); pointer-events:none; z-index:999; animation:flashRed 0.35s ease forwards; }
 
-/* ═══ VICTORY ═══ */
 #screen-victory { background:var(--ink); align-items:center; justify-content:center; padding:2rem; }
 .confetti-area { position:fixed; inset:0; pointer-events:none; z-index:1; }
 .confetti-piece { position:absolute; width:10px; height:10px; animation:confettiFall linear infinite; opacity:0; }
@@ -373,7 +373,7 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .obj-tooltip { position:fixed; background:var(--ink); color:var(--gold); border:2px solid var(--gold); padding:0.35rem 0.7rem; font-size:0.78rem; font-weight:700; border-radius:4px; pointer-events:none; z-index:1000; display:none; max-width:190px; text-align:center; }
 .click-ripple { position:fixed; width:38px; height:38px; border:3px solid var(--gold); border-radius:50%; pointer-events:none; z-index:999; animation:rippleOut 0.45s ease-out forwards; transform:translate(-50%,-50%); }
 @keyframes rippleOut { from{transform:translate(-50%,-50%) scale(0);opacity:1} to{transform:translate(-50%,-50%) scale(3);opacity:0} }
-.wrong-flash { position:fixed; inset:0; background:rgba(220,38,38,0.15); pointer-events:none; z-index:999; animation:flashRed 0.35s ease forwards; }
+.wrong-flash { position:fixed; inset:0; background:rgba(220,38,38,0.12); pointer-events:none; z-index:999; animation:flashRed 0.35s ease forwards; }
 @keyframes flashRed { from{opacity:1} to{opacity:0} }
 
 /* INTRO SCREEN */
@@ -382,14 +382,12 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .intro-content { text-align:center; position:relative; z-index:2; max-width:560px; }
 .bitcoin-logo { font-size:4.5rem; animation:float 3s ease-in-out infinite; display:block; margin-bottom:0.8rem; }
 @keyframes float { 0%,100%{transform:translateY(0) rotate(-5deg)} 50%{transform:translateY(-14px) rotate(5deg)} }
-.intro-title { font-family:'Bangers',cursive; font-size:clamp(2.5rem,7vw,4rem); color:var(--gold); letter-spacing:3px; text-shadow:4px 4px 0 var(--orange); line-height:1; margin-bottom:0.4rem; }
+.intro-title { font-family:'Bangers',cursive; font-size:clamp(3rem,8vw,5rem); color:var(--gold); letter-spacing:4px; text-shadow:5px 5px 0 var(--orange),10px 10px 0 rgba(0,0,0,0.25); line-height:1; margin-bottom:0.4rem; }
 .intro-subtitle { font-family:'Bangers',cursive; font-size:clamp(1rem,2.5vw,1.5rem); color:white; letter-spacing:2px; margin-bottom:1.5rem; opacity:0.75; }
 .intro-desc { background:rgba(255,255,255,0.04); border:2px solid var(--gold); border-radius:8px; padding:1.2rem; color:rgba(255,255,255,0.8); font-size:0.9rem; line-height:1.7; margin-bottom:1.8rem; text-align:left; }
 .intro-steps { display:grid; gap:0.5rem; margin-bottom:0.5rem; }
 .step-row { display:flex; align-items:center; gap:0.6rem; font-size:0.88rem; }
 .step-icon { font-size:1.1rem; width:28px; flex-shrink:0; }
-.attempts-warning { background:rgba(220,38,38,0.15); border:1px solid rgba(220,38,38,0.4); border-radius:6px; padding:0.5rem 0.8rem; margin-top:0.8rem; }
-.attempts-warning-text { color:#f87171; font-size:0.8rem; font-weight:700; }
 </style>
 </head>
 <body>
@@ -407,11 +405,11 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
       <div class="intro-steps" style="margin-top:0.8rem">
         <div class="step-row"><span class="step-icon">📖</span><span>Lee el <strong>cómic</strong> de cada capítulo</span></div>
         <div class="step-row"><span class="step-icon">❓</span><span>Responde la <strong>pregunta</strong> de control</span></div>
-        <div class="step-row"><span class="step-icon">🔍</span><span>Encuentra los <strong>objetos ocultos</strong> en el escenario</span></div>
+        <div class="step-row"><span class="step-icon">🔍</span><span>Explora el <strong>escenario</strong> y encuentra objetos ocultos</span></div>
         <div class="step-row"><span class="step-icon">🏆</span><span>¡Desbloquea el siguiente capítulo!</span></div>
       </div>
-      <div class="attempts-warning">
-        <div class="attempts-warning-text">⚠️ ¡CUIDADO! Solo tienes 3 intentos de error por nivel</div>
+      <div style="background:rgba(220,38,38,0.15);border:1px solid rgba(220,38,38,0.4);border-radius:6px;padding:0.5rem 0.8rem;margin-top:0.8rem">
+        <div style="color:#f87171;font-size:0.85rem;font-weight:700">⚠️ ¡CUIDADO! Solo tienes 3 intentos de error por nivel</div>
       </div>
     </div>
     <button class="btn-primary" onclick="goTo('screen-map')">¡COMENZAR LA AVENTURA! ⚡</button>
@@ -456,8 +454,8 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 <div class="screen" id="screen-scene">
   <div class="scene-header">
     <div class="scene-title" id="scene-title">🔍 ESCENARIO</div>
-    <div style="display:flex;gap:0.5rem">
-      <div class="attempts-counter" id="attempts-counter">❤️ Intentos: 3</div>
+    <div style="display:flex;gap:0.8rem;align-items:center">
+      <div class="attempts-display" id="attempts-display">❤️❤️❤️</div>
       <div class="objects-counter" id="objects-counter">Objetos: 0 / 4</div>
     </div>
   </div>
@@ -466,21 +464,6 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
     <div class="room" id="room"></div>
   </div>
   <div class="objects-pane" id="objects-pane"></div>
-</div>
-
-<!-- ═══════════════ GAME OVER ═══════════════ -->
-<div class="screen" id="screen-gameover">
-  <div class="gameover-content">
-    <div class="gameover-emoji">💔</div>
-    <div class="gameover-title">¡SIN INTENTOS!</div>
-    <div class="gameover-message">
-      Te quedaste sin intentos para encontrar los objetos.<br>
-      ¡No te preocupes! Puedes intentarlo de nuevo.
-    </div>
-    <button class="btn-retry" onclick="retryScene()">🔄 REINTENTAR NIVEL</button>
-    <br>
-    <button class="btn-map" onclick="goTo('screen-map')">🗺️ VOLVER AL MAPA</button>
-  </div>
 </div>
 
 <!-- ═══════════════ VICTORIA ═══════════════ -->
@@ -498,6 +481,21 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
     <br>
     <button class="btn-secondary" onclick="goTo('screen-map')">🗺️ VER MAPA</button>
     <div class="next-chapter-hint" id="v-hint"></div>
+  </div>
+</div>
+
+<!-- ═══════════════ GAME OVER ═══════════════ -->
+<div class="screen" id="screen-gameover">
+  <div class="gameover-content">
+    <div class="gameover-emoji">💔</div>
+    <div class="gameover-title">¡SIN INTENTOS!</div>
+    <div class="gameover-message">
+      Te quedaste sin intentos para encontrar los objetos.<br>
+      ¡No te preocupes! Puedes intentarlo de nuevo.
+    </div>
+    <button class="btn-retry" onclick="retryScene()">🔄 REINTENTAR NIVEL</button>
+    <br>
+    <button class="btn-secondary" onclick="goTo('screen-map')">🗺️ VOLVER AL MAPA</button>
   </div>
 </div>
 
@@ -753,7 +751,9 @@ const chapters = [
   }
 },
 
-// CAP 3, 4, 5 (abreviados para el archivo, pero incluyo la estructura completa)
+// ─────────────────────────────────────────────────
+// CAP 3: LA INFLACIÓN — EL LADRÓN INVISIBLE
+// ─────────────────────────────────────────────────
 {
   id: 3,
   mapTitle: "LA INFLACIÓN — EL LADRÓN INVISIBLE",
@@ -766,28 +766,91 @@ const chapters = [
       bg: "linear-gradient(135deg,#1a0000,#3d0000)",
       caption: "¿QUÉ ES EL DINERO FIAT?",
       aspect: "3/2",
-      artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.7rem;padding:0.8rem"><div style="text-align:center"><div style="font-size:2rem">🏛️</div><div style="font-size:0.55rem;color:rgba(255,255,255,0.5)">BANCO CENTRAL</div></div><div style="font-size:1.5rem;color:#dc2626">→</div><div style="text-align:center"><div style="font-size:2rem">🖨️</div><div style="font-size:0.55rem;color:rgba(255,255,255,0.5)">IMPRIME</div></div><div style="font-size:1.5rem;color:#dc2626">→</div><div style="text-align:center"><div style="font-size:2rem">💵</div><div style="font-size:0.55rem;color:rgba(255,255,255,0.5)">DINERO DE PAPEL</div></div></div><div class="narr" style="font-size:0.62rem">Dinero fiat: papel impreso por gobiernos sin respaldo en oro ni plata</div>`,
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.7rem;padding:0.8rem">
+          <div style="text-align:center">
+            <div style="font-size:2rem">🏛️</div>
+            <div style="font-size:0.55rem;color:rgba(255,255,255,0.5);font-family:'Space Mono',monospace">BANCO CENTRAL</div>
+          </div>
+          <div style="font-size:1.5rem;color:#dc2626">→</div>
+          <div style="text-align:center">
+            <div style="font-size:2rem">🖨️</div>
+            <div style="font-size:0.55rem;color:rgba(255,255,255,0.5)">IMPRIME</div>
+          </div>
+          <div style="font-size:1.5rem;color:#dc2626">→</div>
+          <div style="text-align:center">
+            <div style="font-size:2rem">💵</div>
+            <div style="font-size:0.55rem;color:rgba(255,255,255,0.5)">DINERO DE PAPEL</div>
+          </div>
+        </div>
+        <div class="narr" style="font-size:0.62rem">Dinero fiat: papel impreso por gobiernos sin respaldo en oro ni plata</div>`,
       text: "El dinero fiat (peso, dólar, euro) no está respaldado por nada físico. El gobierno puede imprimir cuanto quiera... ¿y qué pasa cuando lo hace?"
     },
     {
       bg: "linear-gradient(135deg,#0d0000,#2d0a0a)",
       caption: "LA INFLACIÓN EN ACCIÓN",
       aspect: "3/2",
-      artHTML: `<div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.4rem;padding:0.8rem"><div style="display:flex;gap:1.5rem;align-items:center"><div style="text-align:center"><div style="font-size:0.6rem;color:rgba(255,255,255,0.5);margin-bottom:0.2rem">ANTES (1970)</div><div style="font-size:1.5rem">🍞</div><div style="font-family:'Bangers',cursive;color:#4ade80;font-size:1rem">$0.18</div></div><div style="font-size:2rem;color:#dc2626">→</div><div style="text-align:center"><div style="font-size:0.6rem;color:rgba(255,255,255,0.5);margin-bottom:0.2rem">AHORA</div><div style="font-size:1.5rem">🍞</div><div style="font-family:'Bangers',cursive;color:#f87171;font-size:1rem">$3.50</div></div></div><div style="font-family:'Bangers',cursive;color:#dc2626;font-size:1.5rem;letter-spacing:2px">+1,844% DE INFLACIÓN</div></div>`,
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.4rem;padding:0.8rem">
+          <div style="display:flex;gap:1.5rem;align-items:center">
+            <div style="text-align:center">
+              <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);margin-bottom:0.2rem">ANTES (1970)</div>
+              <div style="font-size:1.5rem">🍞</div>
+              <div style="font-family:'Bangers',cursive;color:#4ade80;font-size:1rem">$0.18</div>
+            </div>
+            <div style="font-size:2rem;color:#dc2626">→</div>
+            <div style="text-align:center">
+              <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);margin-bottom:0.2rem">AHORA</div>
+              <div style="font-size:1.5rem">🍞</div>
+              <div style="font-family:'Bangers',cursive;color:#f87171;font-size:1rem">$3.50</div>
+            </div>
+          </div>
+          <div style="font-family:'Bangers',cursive;color:#dc2626;font-size:1.5rem;letter-spacing:2px">+1,844% DE INFLACIÓN</div>
+        </div>
+        <div class="speech-bubble" style="bottom:8px;right:8px;font-size:0.65rem">¡El mismo pan, 20 veces más caro! 😱</div>`,
       text: "La inflación es el \"ladrón invisible\". Tu dinero pierde valor sin que nadie te lo robe físicamente. Un pan que costaba $0.18 en 1970 hoy cuesta $3.50."
     },
     {
       bg: "linear-gradient(135deg,#0a0a1a,#1a1a3d)",
       caption: "¿QUIÉN SE BENEFICIA?",
       aspect: "3/2",
-      artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.8rem;flex-wrap:wrap"><div style="text-align:center;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.4);border-radius:8px;padding:0.5rem 0.7rem"><div style="font-size:1.5rem">🏦</div><div style="font-size:0.58rem;color:#f87171;font-weight:700">Bancos y gobiernos<br>imprimen primero</div><div style="font-size:0.5rem;color:rgba(255,255,255,0.5)">↑ Poder adquisitivo</div></div><div style="font-family:'Bangers',cursive;color:#dc2626;font-size:2rem">VS</div><div style="text-align:center;background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.4);border-radius:8px;padding:0.5rem 0.7rem"><div style="font-size:1.5rem">👨‍👩‍👧</div><div style="font-size:0.58rem;color:#86efac;font-weight:700">Ciudadanos normales<br>reciben el dinero tarde</div><div style="font-size:0.5rem;color:rgba(255,255,255,0.5)">↓ Poder adquisitivo</div></div></div>`,
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:1rem;padding:0.8rem;flex-wrap:wrap">
+          <div style="text-align:center;background:rgba(220,38,38,0.1);border:1px solid rgba(220,38,38,0.4);border-radius:8px;padding:0.5rem 0.7rem">
+            <div style="font-size:1.5rem">🏦</div>
+            <div style="font-size:0.58rem;color:#f87171;font-weight:700">Bancos y gobiernos<br>imprimen primero</div>
+            <div style="font-size:0.5rem;color:rgba(255,255,255,0.5)">↑ Poder adquisitivo</div>
+          </div>
+          <div style="font-family:'Bangers',cursive;color:#dc2626;font-size:2rem">VS</div>
+          <div style="text-align:center;background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.4);border-radius:8px;padding:0.5rem 0.7rem">
+            <div style="font-size:1.5rem">👨‍👩‍👧</div>
+            <div style="font-size:0.58rem;color:#86efac;font-weight:700">Ciudadanos normales<br>reciben el dinero tarde</div>
+            <div style="font-size:0.5rem;color:rgba(255,255,255,0.5)">↓ Poder adquisitivo</div>
+          </div>
+        </div>`,
       text: "Los que imprimen el dinero se benefician. Los ciudadanos comunes, que lo reciben tarde, lo reciben ya devaluado. ¡Esto se llama \"Efecto Cantillon\"!"
     },
     {
       bg: "linear-gradient(135deg,#0a1a00,#1a3400)",
       caption: "BITCOIN ES ESCASO",
       aspect: "3/2",
-      artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.8rem;padding:0.8rem"><div><div style="font-family:'Bangers',cursive;color:#dc2626;font-size:0.9rem;letter-spacing:1px;margin-bottom:0.5rem">DINERO FIAT</div><div style="background:rgba(220,38,38,0.1);border:1px solid #dc2626;border-radius:6px;padding:0.4rem 0.7rem"><div style="font-size:0.58rem;color:#f87171;line-height:1.5">Oferta: INFINITA<br>¿Límite? NINGUNO<br>¿Quién decide? GOB.</div></div></div><div style="font-family:'Bangers',cursive;font-size:2rem;color:rgba(255,255,255,0.3)">VS</div><div><div style="font-family:'Bangers',cursive;color:#f7c948;font-size:0.9rem;letter-spacing:1px;margin-bottom:0.5rem">BITCOIN</div><div style="background:rgba(247,201,72,0.1);border:1px solid #f7c948;border-radius:6px;padding:0.4rem 0.7rem"><div style="font-size:0.58rem;color:rgba(247,201,72,0.9);line-height:1.5">Oferta: 21 MILLONES<br>¿Límite? FIJO<br>¿Quién decide? CÓDIGO</div></div></div></div>`,
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.8rem;padding:0.8rem">
+          <div>
+            <div style="font-family:'Bangers',cursive;color:#dc2626;font-size:0.9rem;letter-spacing:1px;margin-bottom:0.5rem">DINERO FIAT</div>
+            <div style="background:rgba(220,38,38,0.1);border:1px solid #dc2626;border-radius:6px;padding:0.4rem 0.7rem">
+              <div style="font-size:0.58rem;color:#f87171;line-height:1.5">Oferta: INFINITA<br>¿Límite? NINGUNO<br>¿Quién decide? GOB.</div>
+            </div>
+          </div>
+          <div style="font-family:'Bangers',cursive;font-size:2rem;color:rgba(255,255,255,0.3)">VS</div>
+          <div>
+            <div style="font-family:'Bangers',cursive;color:#f7c948;font-size:0.9rem;letter-spacing:1px;margin-bottom:0.5rem">BITCOIN</div>
+            <div style="background:rgba(247,201,72,0.1);border:1px solid #f7c948;border-radius:6px;padding:0.4rem 0.7rem">
+              <div style="font-size:0.58rem;color:rgba(247,201,72,0.9);line-height:1.5">Oferta: 21 MILLONES<br>¿Límite? FIJO<br>¿Quién decide? CÓDIGO</div>
+            </div>
+          </div>
+        </div>
+        <div class="speech-bubble right" style="bottom:8px;right:8px;font-size:0.62rem">¡Nadie puede inflar Bitcoin! ₿</div>`,
       text: "Bitcoin tiene un límite fijo: 21 millones de monedas. NUNCA más. Nadie — ni gobiernos ni bancos — puede imprimir más Bitcoin. ¡Es anti-inflacionario por diseño!"
     }
   ],
@@ -807,11 +870,16 @@ const chapters = [
     bgColor: "linear-gradient(180deg,#0a0000 0%,#1a0505 40%,#0d0d00 100%)",
     objects: [
       { id:1, icon:"🖨️", label:"La impresora de dinero", tip:"¡La impresora del banco central que crea inflación!", style:"top:50px;left:22%", render:`<div style="font-size:2.2rem;filter:drop-shadow(2px 2px 8px rgba(220,38,38,0.5))">🖨️</div>` },
-      { id:2, icon:"📉", label:"Gráfica de inflación", tip:"¡El poder adquisitivo cayendo con el tiempo!", style:"top:55px;right:22%", render:`<div style="width:55px;height:45px;background:rgba(0,0,0,0.5);border:1px solid rgba(220,38,38,0.5);border-radius:3px;display:flex;align-items:flex-end;padding:3px"><svg width="100%" height="100%" viewBox="0 0 50 35"><polyline points="0,5 12,8 25,18 38,25 50,32" fill="none" stroke="#dc2626" stroke-width="2"/></svg></div>` },
-      { id:3, icon:"🍞", label:"Pan con inflación", tip:"¡El precio del pan subiendo por la inflación!", style:"bottom:88px;left:18%", render:`<div style="position:relative"><div style="font-size:1.8rem">🍞</div><div style="position:absolute;top:-8px;right:-8px;background:#dc2626;color:white;font-family:'Bangers',cursive;font-size:0.5rem;padding:1px 3px;border-radius:2px">+1844%</div></div>` },
+      { id:2, icon:"📉", label:"Gráfica de inflación", tip:"¡El poder adquisitivo cayendo con el tiempo!", style:"top:55px;right:22%", render:`<div style="width:55px;height:45px;background:rgba(0,0,0,0.5);border:1px solid rgba(220,38,38,0.5);border-radius:3px;display:flex;align-items:flex-end;padding:3px;position:relative;overflow:hidden"><svg width="100%" height="100%" viewBox="0 0 50 35"><polyline points="0,5 12,8 25,18 38,25 50,32" fill="none" stroke="#dc2626" stroke-width="2"/><text x="1" y="10" fill="rgba(255,255,255,0.5)" font-size="5">valor</text></svg></div>` },
+      { id:3, icon:"🍞", label:"Pan con inflación", tip:"¡El precio del pan subiendo por la inflación!", style:"bottom:88px;left:18%", render:`<div style="position:relative"><div style="font-size:1.8rem;filter:drop-shadow(2px 2px 4px rgba(0,0,0,0.6))">🍞</div><div style="position:absolute;top:-8px;right:-8px;background:#dc2626;color:white;font-family:'Bangers',cursive;font-size:0.5rem;padding:1px 3px;border-radius:2px;white-space:nowrap">+1844%</div></div>` },
       { id:4, icon:"₿", label:"Bitcoin — límite de 21M", tip:"¡21 millones de Bitcoin: el límite fijo anti-inflación!", style:"bottom:82px;right:22%", render:`<div style="width:42px;height:42px;background:radial-gradient(circle at 35% 35%,#ffd700,#b8860b 60%,#8b6914);border-radius:50%;border:2px solid #b8860b;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 10px rgba(247,201,72,0.4)">₿</div>` }
     ],
-    decorHTML: `<div class="deco" style="top:40px;left:45%;width:100px;height:70px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:0.5rem;color:rgba(255,255,255,0.3);text-align:center">RESERVA FEDERAL<br>OFERTA MONETARIA<br><span style="color:#dc2626;font-size:0.6rem">∞ SIN LÍMITE</span></div></div><div class="deco" style="bottom:65px;left:0;right:0;height:8px;background:linear-gradient(180deg,rgba(220,38,38,0.2),transparent)"></div>`
+    decorHTML: `
+      <div class="deco" style="top:40px;left:45%;width:100px;height:70px;background:rgba(0,0,0,0.4);border:2px solid rgba(255,255,255,0.1);display:flex;flex-direction:column;align-items:center;justify-content:center">
+        <div style="font-size:0.5rem;color:rgba(255,255,255,0.3);font-family:'Space Mono',monospace;text-align:center">RESERVA FEDERAL<br>OFERTA MONETARIA<br><span style="color:#dc2626;font-size:0.6rem">∞ SIN LÍMITE</span></div>
+      </div>
+      <div class="deco" style="bottom:65px;left:0;right:0;height:8px;background:linear-gradient(180deg,rgba(220,38,38,0.2),transparent)"></div>
+      <div class="deco" style="bottom:73px;left:30%;width:40%;height:4px;background:#2d0000;border-radius:1px"></div>`
   },
   victory: {
     emoji: "📉",
@@ -826,7 +894,9 @@ const chapters = [
   }
 },
 
-// CAP 4 y 5 similares (omitidos por espacio, pero siguen la misma estructura)
+// ─────────────────────────────────────────────────
+// CAP 4: BITCOIN COMO DINERO SÓLIDO
+// ─────────────────────────────────────────────────
 {
   id: 4,
   mapTitle: "BITCOIN COMO DINERO SÓLIDO",
@@ -835,14 +905,104 @@ const chapters = [
   comicTitle: "CAPÍTULO 4: BITCOIN — DINERO SÓLIDO DIGITAL",
   comicColor: "#2563eb",
   panels: [
-    { bg: "linear-gradient(135deg,#001433,#001f5c)", caption: "LA RED DESCENTRALIZADA", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><div style="font-size:3rem;filter:drop-shadow(0 0 20px #f7c948)">🌐</div></div>`, text: "Bitcoin no tiene un servidor central. Corre en miles de computadoras alrededor del mundo. ¡Imposible de apagar!" },
-    { bg: "linear-gradient(135deg,#0d0020,#1a003d)", caption: "LA BLOCKCHAIN", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.3rem">${[1,2,3,4,5].map(()=>`<div style="width:40px;height:50px;background:rgba(124,58,237,0.2);border:2px solid rgba(124,58,237,0.5);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:0.6rem;color:#a78bfa">₿</div>`).join('<div style="color:#7c3aed">→</div>')}</div>`, text: "La blockchain es un libro contable gigante que guarda TODAS las transacciones. Es público e inalterable." },
-    { bg: "linear-gradient(135deg,#001a0d,#003320)", caption: "PROPIEDADES DEL DINERO SÓLIDO", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.3rem;padding:0.6rem;align-items:center">${[{icon:"💪",label:"DURADERO"},{icon:"✂️",label:"DIVISIBLE"},{icon:"🌍",label:"PORTABLE"},{icon:"👁️",label:"VERIFICABLE"},{icon:"🔒",label:"ESCASO"},{icon:"🔄",label:"FUNGIBLE"}].map(p=>`<div style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.3);border-radius:4px;padding:0.3rem;text-align:center"><div style="font-size:1rem">${p.icon}</div><div style="font-family:'Bangers',cursive;font-size:0.55rem;color:#4ade80">${p.label}</div></div>`).join('')}</div>`, text: "Bitcoin tiene TODAS las propiedades del dinero sólido, pero en versión digital." },
-    { bg: "linear-gradient(135deg,#1a0a00,#2d1500)", caption: "LOS JUGADORES DE LA RED", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.6rem;padding:0.8rem"><div style="text-align:center"><div style="font-size:1.4rem">⛏️</div><div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#f7c948">MINEROS</div></div><div style="text-align:center"><div style="font-size:1.4rem">💻</div><div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#93c5fd">NODOS</div></div><div style="text-align:center"><div style="font-size:1.4rem">👤</div><div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#a78bfa">USUARIOS</div></div></div>`, text: "La red Bitcoin funciona como una orquesta: mineros, nodos y usuarios trabajan juntos sin un director." }
+    {
+      bg: "linear-gradient(135deg,#001433,#001f5c)",
+      caption: "LA RED DESCENTRALIZADA",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+          <svg width="200" height="120" viewBox="0 0 200 120">
+            <line x1="100" y1="60" x2="40" y2="25" stroke="rgba(247,201,72,0.4)" stroke-width="1.5"/>
+            <line x1="100" y1="60" x2="160" y2="25" stroke="rgba(247,201,72,0.4)" stroke-width="1.5"/>
+            <line x1="100" y1="60" x2="30" y2="95" stroke="rgba(247,201,72,0.4)" stroke-width="1.5"/>
+            <line x1="100" y1="60" x2="170" y2="95" stroke="rgba(247,201,72,0.4)" stroke-width="1.5"/>
+            <line x1="40" y1="25" x2="160" y2="25" stroke="rgba(247,201,72,0.2)" stroke-width="1"/>
+            <line x1="30" y1="95" x2="170" y2="95" stroke="rgba(247,201,72,0.2)" stroke-width="1"/>
+            <circle cx="100" cy="60" r="12" fill="rgba(247,201,72,0.2)" stroke="#f7c948" stroke-width="2"/>
+            <text x="96" y="64" fill="#f7c948" font-size="10">₿</text>
+            <circle cx="40" cy="25" r="8" fill="rgba(37,99,235,0.3)" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="37" y="28" fill="white" font-size="7">PC</text>
+            <circle cx="160" cy="25" r="8" fill="rgba(37,99,235,0.3)" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="157" y="28" fill="white" font-size="7">PC</text>
+            <circle cx="30" cy="95" r="8" fill="rgba(37,99,235,0.3)" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="27" y="98" fill="white" font-size="7">📱</text>
+            <circle cx="170" cy="95" r="8" fill="rgba(37,99,235,0.3)" stroke="#2563eb" stroke-width="1.5"/>
+            <text x="167" y="98" fill="white" font-size="7">📱</text>
+          </svg>
+        </div>
+        <div class="narr" style="font-size:0.62rem">Miles de computadoras en todo el mundo — sin jefe, sin centro</div>`,
+      text: "Bitcoin no tiene un servidor central. Corre en miles de computadoras alrededor del mundo. Si atacas una, las otras siguen. ¡Imposible de apagar!"
+    },
+    {
+      bg: "linear-gradient(135deg,#0d0020,#1a003d)",
+      caption: "LA BLOCKCHAIN — EL LIBRO CONTABLE",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.3rem;padding:0.8rem">
+          <div style="display:flex;gap:0.3rem;align-items:center;flex-wrap:wrap;justify-content:center">
+            ${[1,2,3,4,5].map((n,i)=>`
+              <div style="background:rgba(124,58,237,0.2);border:2px solid rgba(124,58,237,0.5);border-radius:4px;padding:0.4rem;text-align:center;min-width:45px">
+                <div style="font-family:'Bangers',cursive;font-size:0.6rem;color:#a78bfa">BLOQUE #${n}</div>
+                <div style="font-size:0.38rem;color:rgba(255,255,255,0.5);font-family:'Space Mono',monospace;line-height:1.4;margin-top:1px">Hash: 0x${Math.random().toString(16).slice(2,6)}<br>Tx: 2,341</div>
+              </div>
+              ${i<4?'<div style="color:rgba(124,58,237,0.8);font-size:1rem">→</div>':''}
+            `).join('')}
+          </div>
+        </div>`,
+      text: "La blockchain es un libro contable gigante que guarda TODAS las transacciones de Bitcoin. Es público, transparent y nadie puede borrarlo ni alterarlo."
+    },
+    {
+      bg: "linear-gradient(135deg,#001a0d,#003320)",
+      caption: "PROPIEDADES DEL DINERO SÓLIDO",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.3rem;padding:0.6rem;align-items:center">
+          ${[
+            {icon:"💪",label:"DURADERO",desc:"Digital = eterno"},
+            {icon:"✂️",label:"DIVISIBLE",desc:"Hasta 0.00000001"},
+            {icon:"🌍",label:"PORTABLE",desc:"Lo llevas en tu cel"},
+            {icon:"👁️",label:"VERIFICABLE",desc:"Código abierto"},
+            {icon:"🔒",label:"ESCASO",desc:"Máx 21M siempre"},
+            {icon:"🔄",label:"FUNGIBLE",desc:"1 BTC = 1 BTC"}
+          ].map(p=>`
+            <div style="background:rgba(22,163,74,0.1);border:1px solid rgba(22,163,74,0.3);border-radius:4px;padding:0.3rem;text-align:center">
+              <div style="font-size:1rem">${p.icon}</div>
+              <div style="font-family:'Bangers',cursive;font-size:0.6rem;color:#4ade80;letter-spacing:0.5px">${p.label}</div>
+              <div style="font-size:0.42rem;color:rgba(255,255,255,0.5)">${p.desc}</div>
+            </div>
+          `).join('')}
+        </div>`,
+      text: "Bitcoin tiene TODAS las propiedades del dinero sólido, pero en versión digital. El oro tiene 6,000 años de historia; Bitcoin tiene el código. ¡Y el código no miente!"
+    },
+    {
+      bg: "linear-gradient(135deg,#1a0a00,#2d1500)",
+      caption: "LOS JUGADORES DE LA RED",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.6rem;padding:0.8rem;flex-wrap:wrap">
+          <div style="text-align:center;background:rgba(247,201,72,0.1);border:1px solid rgba(247,201,72,0.4);border-radius:6px;padding:0.4rem 0.6rem">
+            <div style="font-size:1.4rem">⛏️</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#f7c948">MINEROS</div>
+            <div style="font-size:0.48rem;color:rgba(255,255,255,0.5)">Validan bloques</div>
+          </div>
+          <div style="text-align:center;background:rgba(37,99,235,0.1);border:1px solid rgba(37,99,235,0.4);border-radius:6px;padding:0.4rem 0.6rem">
+            <div style="font-size:1.4rem">💻</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#93c5fd">NODOS</div>
+            <div style="font-size:0.48rem;color:rgba(255,255,255,0.5)">Guardan el historial</div>
+          </div>
+          <div style="text-align:center;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.4);border-radius:6px;padding:0.4rem 0.6rem">
+            <div style="font-size:1.4rem">👤</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#a78bfa">USUARIOS</div>
+            <div style="font-size:0.48rem;color:rgba(255,255,255,0.5)">Envían y reciben</div>
+          </div>
+        </div>
+        <div class="narr" style="font-size:0.62rem">Todos trabajan juntos. Nadie tiene más poder que otro. ¡Como una sinfonía!</div>`,
+      text: "La red Bitcoin funciona como una orquesta: mineros, nodos y usuarios trabajan juntos sin un director. ¡Cada uno hace su parte y el sistema funciona solo!"
+    }
   ],
   question: {
     text: "¿Cuántas copias del libro contable de Bitcoin existen?",
-    hint: "💡 Piensa en la red descentralizada",
+    hint: "💡 Piensa en la red descentralizada — ¿cuántos nodos hay?",
     answers: [
       { text: "🏦 Una sola copia en un servidor central", correct: false },
       { text: "📋 3 copias en 3 países diferentes", correct: false },
@@ -855,17 +1015,24 @@ const chapters = [
     mission: "Encuentra los 4 componentes que hacen funcionar la red Bitcoin",
     bgColor: "linear-gradient(180deg,#000d1a 0%,#001033 50%,#000d0d 100%)",
     objects: [
-      { id:1, icon:"⛏️", label:"Minero de Bitcoin", tip:"¡Los mineros validan las transacciones!", style:"top:55px;left:18%", render:`<div style="font-size:2rem">⛏️</div>` },
-      { id:2, icon:"🔗", label:"Bloque de la cadena", tip:"¡Un bloque de la blockchain!", style:"top:50px;right:20%", render:`<div style="width:50px;height:40px;background:rgba(124,58,237,0.2);border:2px solid rgba(124,58,237,0.6);border-radius:3px;display:flex;align-items:center;justify-content:center"><div style="font-family:'Bangers',cursive;font-size:0.55rem;color:#a78bfa">BLOQUE</div></div>` },
-      { id:3, icon:"🔑", label:"Clave privada", tip:"¡Tu clave privada — la llave de tu Bitcoin!", style:"bottom:90px;left:20%", render:`<div style="font-size:2rem">🔑</div>` },
-      { id:4, icon:"📱", label:"Billetera Bitcoin", tip:"¡La billetera donde guardas tus Bitcoin!", style:"bottom:82px;right:18%", render:`<div style="width:35px;height:55px;background:linear-gradient(180deg,#1a1a2e,#0d0d1a);border:2px solid rgba(247,201,72,0.5);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:1rem">₿</div></div>` }
+      { id:1, icon:"⛏️", label:"Minero de Bitcoin", tip:"¡Los mineros validan las transacciones y crean nuevos bloques!", style:"top:55px;left:18%", render:`<div style="font-size:2rem;filter:drop-shadow(0 0 8px rgba(247,201,72,0.6))">⛏️</div>` },
+      { id:2, icon:"🔗", label:"Bloque de la cadena", tip:"¡Un bloque de la blockchain — registro permanente!", style:"top:50px;right:20%", render:`<div style="width:50px;height:40px;background:rgba(124,58,237,0.2);border:2px solid rgba(124,58,237,0.6);border-radius:3px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(124,58,237,0.3)"><div style="font-family:'Bangers',cursive;font-size:0.55rem;color:#a78bfa">BLOQUE</div><div style="font-size:0.38rem;color:rgba(255,255,255,0.5);font-family:'Space Mono',monospace">#840000</div></div>` },
+      { id:3, icon:"🔑", label:"Clave privada", tip:"¡Tu clave privada — la llave de tu Bitcoin, ¡nunca la pierdas!", style:"bottom:90px;left:20%", render:`<div style="font-size:2rem;filter:drop-shadow(0 0 8px rgba(247,201,72,0.4))">🔑</div>` },
+      { id:4, icon:"📱", label:"Billetera Bitcoin", tip:"¡La billetera donde guardas tus Bitcoin!", style:"bottom:82px;right:18%", render:`<div style="width:35px;height:55px;background:linear-gradient(180deg,#1a1a2e,#0d0d1a);border:2px solid rgba(247,201,72,0.5);border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 8px rgba(247,201,72,0.2)"><div style="font-size:1rem">₿</div><div style="font-size:0.3rem;color:rgba(247,201,72,0.7);font-family:'Space Mono',monospace;line-height:1.4">WALLET<br>0.5 BTC</div></div>` }
     ],
-    decorHTML: `<div class="deco" style="top:30px;left:42%;font-size:1.5rem;opacity:0.15">🌐</div>`
+    decorHTML: `
+      <div class="deco" style="position:absolute;inset:0;background:repeating-linear-gradient(90deg,transparent,transparent 40px,rgba(37,99,235,0.02) 40px,rgba(37,99,235,0.02) 41px),repeating-linear-gradient(0deg,transparent,transparent 40px,rgba(37,99,235,0.02) 40px,rgba(37,99,235,0.02) 41px)"></div>
+      <div class="deco" style="top:30px;left:35%;right:35%;height:2px;background:linear-gradient(90deg,transparent,rgba(247,201,72,0.3),transparent)"></div>
+      <div class="deco" style="bottom:65px;left:35%;width:30%;height:8px;background:#111;border:1px solid rgba(255,255,255,0.1);border-radius:1px"></div>
+      <div class="deco" style="bottom:73px;left:37%;width:26%;height:4px;background:#0a0a0a;border-radius:1px"></div>
+      <div class="deco" style="bottom:77px;left:45%;width:2px;height:22px;background:rgba(255,255,255,0.1)"></div>
+      ${Array.from({length:6},(_,i)=>`<div class="deco" style="top:${30+i*40}px;left:${5+Math.random()*5}%;width:8px;height:8px;background:rgba(37,99,235,${0.2+Math.random()*0.3});border-radius:50%;animation:pulse 1.5s ${i*0.3}s ease-in-out infinite"></div>`).join('')}
+      <style>@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.5);opacity:0.5}}</style>`
   },
   victory: {
     emoji: "🔗",
     title: "¡CAPÍTULO 4 COMPLETADO!",
-    body: `Bitcoin corre en <span class="fact-highlight">miles de computadoras</span> simultáneamente. Su libro contable, la <span class="fact-highlight">blockchain</span>, es público e inalterable.`,
+    body: `Bitcoin corre en <span class="fact-highlight">miles de computadoras</span> simultáneamente. Su libro contable, la <span class="fact-highlight">blockchain</span>, es público e inalterable. Tiene todas las propiedades del dinero sólido, más ser <span class="fact-highlight">programable y resistente a la censura</span>.`,
     facts: [
       { icon:"🌍", label:"Nodos Bitcoin", value:"+19,000 NODOS" },
       { icon:"🔗", label:"Bloques generados", value:"CADA 10 MIN" },
@@ -875,6 +1042,9 @@ const chapters = [
   }
 },
 
+// ─────────────────────────────────────────────────
+// CAP 5: TU BILLETERA BITCOIN
+// ─────────────────────────────────────────────────
 {
   id: 5,
   mapTitle: "CÓMO USAR BITCOIN",
@@ -883,19 +1053,100 @@ const chapters = [
   comicTitle: "CAPÍTULO 5: TU BILLETERA BITCOIN",
   comicColor: "#16a34a",
   panels: [
-    { bg: "linear-gradient(135deg,#001a0d,#00330d)", caption: "¿QUÉ ES UNA BILLETERA?", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.8rem"><div style="text-align:center"><div style="font-size:2.5rem">👛</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.5)">BILLETERA FÍSICA</div></div><div style="font-family:'Bangers',cursive;font-size:1.8rem;color:rgba(255,255,255,0.3)">≠</div><div style="text-align:center"><div style="font-size:2.5rem">📱</div><div style="font-size:0.6rem;color:rgba(255,255,255,0.5)">BILLETERA BITCOIN</div></div></div>`, text: "Una billetera Bitcoin no guarda tus monedas. Guarda tus LLAVES para acceder a ellos en la blockchain." },
-    { bg: "linear-gradient(135deg,#0a001a,#1a003d)", caption: "CLAVE PÚBLICA Y PRIVADA", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.7rem"><div style="text-align:center"><div style="font-size:1.8rem">🔓</div><div style="font-family:'Bangers',cursive;font-size:0.7rem;color:#93c5fd">CLAVE PÚBLICA</div></div><div style="font-family:'Bangers',cursive;font-size:2rem;color:rgba(255,255,255,0.2)">+</div><div style="text-align:center"><div style="font-size:1.8rem">🔒</div><div style="font-family:'Bangers',cursive;font-size:0.7rem;color:#f87171">CLAVE PRIVADA</div></div></div>`, text: "La PÚBLICA compártela para recibir. La PRIVADA ¡NUNCA la compartas! Perderla = perder tus Bitcoin." },
-    { bg: "linear-gradient(135deg,#001a1a,#00333d)", caption: "TRANSACCIÓN", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.5rem"><div style="font-size:1.3rem">👩</div><div style="background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);padding:0.2rem 0.5rem;font-size:0.55rem;color:#4ade80">0.5 BTC →</div><div style="font-size:1.3rem">👨</div></div>`, text: "Enviar Bitcoin: firmas con tu clave privada → nodos verifican → minero confirma → ¡grabado para siempre!" },
-    { bg: "linear-gradient(135deg,#1a1000,#3d2800)", caption: "⚡ RED LIGHTNING", aspect: "3/2", artHTML: `<div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.6rem"><div style="text-align:center;background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.3);border-radius:8px;padding:0.5rem"><div style="font-size:1.3rem">⛓️</div><div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#f7c948">BLOCKCHAIN</div><div style="font-size:0.5rem;color:rgba(255,255,255,0.5)">~10 min</div></div><div style="font-family:'Bangers',cursive;font-size:1.8rem;color:rgba(255,255,255,0.3)">+</div><div style="text-align:center;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.4);border-radius:8px;padding:0.5rem"><div style="font-size:1.3rem">⚡</div><div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#ff6b35">LIGHTNING</div><div style="font-size:0.5rem;color:rgba(255,255,255,0.5)">Instantáneo</div></div></div>`, text: "La Red Lightning permite pagos instantáneos y ultra baratos. Perfecta para café o compras del día." }
+    {
+      bg: "linear-gradient(135deg,#001a0d,#00330d)",
+      caption: "¿QUÉ ES UNA BILLETERA?",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.8rem;padding:0.8rem">
+          <div style="text-align:center">
+            <div style="font-size:2.5rem">👛</div>
+            <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);margin-top:0.3rem">BILLETERA<br>FÍSICA</div>
+            <div style="font-size:0.52rem;color:#f87171;margin-top:0.2rem">Guarda billetes</div>
+          </div>
+          <div style="font-family:'Bangers',cursive;font-size:1.8rem;color:rgba(255,255,255,0.3)">≠</div>
+          <div style="text-align:center">
+            <div style="font-size:2.5rem">📱</div>
+            <div style="font-size:0.6rem;color:rgba(255,255,255,0.5);margin-top:0.3rem">BILLETERA<br>BITCOIN</div>
+            <div style="font-size:0.52rem;color:#4ade80;margin-top:0.2rem">Guarda tus LLAVES</div>
+          </div>
+        </div>
+        <div class="narr" style="font-size:0.62rem">¡Tu Bitcoin no está en la billetera! Está en la blockchain. La billetera guarda TUS LLAVES para acceder a él.</div>`,
+      text: "Una billetera Bitcoin no guarda tus monedas. Guarda tus LLAVES. Con tu clave privada demuestras que el Bitcoin de la blockchain es TUYO."
+    },
+    {
+      bg: "linear-gradient(135deg,#0a001a,#1a003d)",
+      caption: "CLAVE PÚBLICA Y PRIVADA",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.7rem;padding:0.8rem">
+          <div style="text-align:center">
+            <div style="font-size:1.8rem">🔓</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.7rem;color:#93c5fd;letter-spacing:1px">CLAVE PÚBLICA</div>
+            <div style="font-size:0.52rem;color:rgba(255,255,255,0.6);line-height:1.5;margin-top:0.2rem">Como tu número de cuenta<br>¡Compártela para recibir!</div>
+          </div>
+          <div style="font-family:'Bangers',cursive;font-size:2rem;color:rgba(255,255,255,0.2)">+</div>
+          <div style="text-align:center">
+            <div style="font-size:1.8rem">🔒</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.7rem;color:#f87171;letter-spacing:1px">CLAVE PRIVADA</div>
+            <div style="font-size:0.52rem;color:rgba(255,255,255,0.6);line-height:1.5;margin-top:0.2rem">Como tu contraseña secreta<br>¡NUNCA la compartas!</div>
+          </div>
+        </div>
+        <div class="speech-bubble right" style="bottom:8px;right:8px;font-size:0.62rem">Sin tu clave privada = sin acceso a tus BTC 😰</div>`,
+      text: "Tienes 2 llaves: la PÚBLICA (compártela para recibir Bitcoin) y la PRIVADA (NUNCA la compartas). Perder tu clave privada = perder tus Bitcoin para siempre."
+    },
+    {
+      bg: "linear-gradient(135deg,#001a1a,#00333d)",
+      caption: "CÓMO FUNCIONA UNA TRANSACCIÓN",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:0.4rem;padding:0.8rem">
+          <div style="display:flex;align-items:center;gap:0.5rem">
+            <div style="text-align:center;font-size:1.3rem">👩</div>
+            <div style="display:flex;flex-direction:column;gap:0.2rem">
+              <div style="background:rgba(22,163,74,0.15);border:1px solid rgba(22,163,74,0.4);padding:0.2rem 0.5rem;font-size:0.55rem;color:#4ade80;font-weight:700">Eliana → Jim: 0.5 BTC</div>
+              <div style="display:flex;gap:0.3rem;align-items:center">
+                ${['Firma','→','Nodo','→','Minero','→','Bloque'].map((s,i)=>`
+                  <div style="font-size:${i%2===0?'0.5rem':'0.7rem'};color:${i%2===0?'rgba(255,255,255,0.7)':'rgba(255,255,255,0.3)'};">${s}</div>
+                `).join('')}
+              </div>
+            </div>
+            <div style="text-align:center;font-size:1.3rem">👨</div>
+          </div>
+          <div style="font-family:'Space Mono',monospace;font-size:0.45rem;color:rgba(0,255,136,0.6);text-align:center;line-height:1.5">✅ Confirmado en ~10 minutos<br>🌍 Sin bancos, sin fronteras</div>
+        </div>`,
+      text: "Enviar Bitcoin: firmas la transacción con tu clave privada → los nodos la verifican → un minero la confirma → ¡el bloque queda grabado para siempre!"
+    },
+    {
+      bg: "linear-gradient(135deg,#1a1000,#3d2800)",
+      caption: "⚡ RED LIGHTNING — PAGOS INSTANTÁNEOS",
+      aspect: "3/2",
+      artHTML: `
+        <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;gap:0.6rem;padding:0.8rem">
+          <div style="text-align:center;background:rgba(247,201,72,0.08);border:1px solid rgba(247,201,72,0.3);border-radius:8px;padding:0.5rem 0.7rem">
+            <div style="font-size:1.3rem">⛓️</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#f7c948">BLOCKCHAIN</div>
+            <div style="font-size:0.5rem;color:rgba(255,255,255,0.5);line-height:1.4">~10 min<br>$1+ comisión</div>
+          </div>
+          <div style="font-family:'Bangers',cursive;font-size:1.8rem;color:rgba(255,255,255,0.3)">+</div>
+          <div style="text-align:center;background:rgba(255,107,53,0.1);border:1px solid rgba(255,107,53,0.4);border-radius:8px;padding:0.5rem 0.7rem">
+            <div style="font-size:1.3rem">⚡</div>
+            <div style="font-family:'Bangers',cursive;font-size:0.65rem;color:#ff6b35">LIGHTNING</div>
+            <div style="font-size:0.5rem;color:rgba(255,255,255,0.5);line-height:1.4">Instantáneo<br>$0.001 comisión</div>
+          </div>
+        </div>
+        <div class="narr" style="font-size:0.62rem">Lightning: paga tu café con Bitcoin en segundos y casi sin comisión</div>`,
+      text: "La Red Lightning es una \"segunda capa\" sobre Bitcoin. ¡Permite pagos instantáneos y ultra baratos! Perfecta para pagar café o compras del día a día."
+    }
   ],
   question: {
     text: "¿Qué guarda realmente una billetera Bitcoin?",
-    hint: "💡 Tu Bitcoin no está 'dentro' de la billetera...",
+    hint: "💡 Recuerda: tu Bitcoin no está 'dentro' de la billetera...",
     answers: [
-      { text: "💰 Los Bitcoin directamente", correct: false },
+      { text: "💰 Los Bitcoin directamente, como una billetera física", correct: false },
       { text: "🔑 Tus claves privadas para acceder a tu Bitcoin", correct: true },
-      { text: "🏦 Una conexión al banco", correct: false },
-      { text: "📋 Una lista de precios", correct: false }
+      { text: "🏦 Una conexión al banco que guarda tu Bitcoin", correct: false },
+      { text: "📋 Una lista de precios actuales de Bitcoin", correct: false }
     ]
   },
   scene: {
@@ -903,17 +1154,23 @@ const chapters = [
     mission: "Encuentra los 4 objetos del ecosistema Bitcoin cotidiano",
     bgColor: "linear-gradient(180deg,#001a00 0%,#003300 40%,#0d1a00 100%)",
     objects: [
-      { id:1, icon:"📱", label:"App de billetera", tip:"¡La app de billetera Bitcoin!", style:"top:55px;left:20%", render:`<div style="width:38px;height:58px;background:linear-gradient(180deg,#1a2e1a,#0d1a0d);border:2px solid rgba(22,163,74,0.6);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center"><div style="font-size:1.2rem">₿</div></div>` },
-      { id:2, icon:"⚡", label:"Código QR Lightning", tip:"¡El código QR para pagar con Lightning!", style:"top:50px;right:22%", render:`<div style="width:48px;height:48px;background:white;border:2px solid #333;border-radius:3px;display:flex;align-items:center;justify-content:center"><div style="font-size:1.5rem">📱</div></div>` },
-      { id:3, icon:"🔑", label:"Frase semilla", tip:"¡Las 12 palabras de tu frase semilla!", style:"bottom:90px;left:18%", render:`<div style="width:55px;height:38px;background:#fdf6e3;border:1px solid #aaa;border-radius:2px;padding:3px"><div style="font-size:0.32rem;color:#000;font-weight:bold">FRASE SEMILLA 🔑</div></div>` },
-      { id:4, icon:"☕", label:"Pago en café con Bitcoin", tip:"¡Pagando el café con Lightning!", style:"bottom:85px;right:20%", render:`<div style="position:relative"><div style="font-size:2rem">☕</div><div style="position:absolute;top:-10px;right:-10px;background:rgba(22,163,74,0.9);color:white;font-family:'Bangers',cursive;font-size:0.45rem;padding:1px 4px;border-radius:3px">⚡ PAGADO</div></div>` }
+      { id:1, icon:"📱", label:"App de billetera", tip:"¡La app de billetera Bitcoin en tu teléfono!", style:"top:55px;left:20%", render:`<div style="width:38px;height:58px;background:linear-gradient(180deg,#1a2e1a,#0d1a0d);border:2px solid rgba(22,163,74,0.6);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 10px rgba(22,163,74,0.2)"><div style="font-size:1.2rem">₿</div><div style="font-size:0.3rem;color:rgba(22,163,74,0.8);font-family:'Space Mono',monospace;text-align:center;line-height:1.4">WALLET<br>⚡ 50k sat</div></div>` },
+      { id:2, icon:"⚡", label:"Código QR Lightning", tip:"¡El código QR para pagar con Lightning Network!", style:"top:50px;right:22%", render:`<div style="width:48px;height:48px;background:white;border:2px solid #333;border-radius:3px;display:flex;flex-wrap:wrap;align-items:center;justify-content:center;padding:3px;box-shadow:2px 2px 4px rgba(0,0,0,0.5)"><svg width="38" height="38" viewBox="0 0 10 10"><rect x="0" y="0" width="3" height="3" fill="black"/><rect x="4" y="0" width="1" height="1" fill="black"/><rect x="7" y="0" width="3" height="3" fill="black"/><rect x="1" y="1" width="1" height="1" fill="white"/><rect x="8" y="1" width="1" height="1" fill="white"/><rect x="0" y="4" width="1" height="1" fill="black"/><rect x="2" y="4" width="2" height="1" fill="black"/><rect x="5" y="4" width="1" height="1" fill="black"/><rect x="7" y="4" width="1" height="1" fill="black"/><rect x="9" y="4" width="1" height="1" fill="black"/><rect x="0" y="7" width="3" height="3" fill="black"/><rect x="1" y="8" width="1" height="1" fill="white"/><rect x="4" y="7" width="1" height="2" fill="black"/><rect x="6" y="7" width="4" height="1" fill="black"/><rect x="7" y="9" width="3" height="1" fill="black"/></svg></div>` },
+      { id:3, icon:"🔑", label:"Frase semilla (12 palabras)", tip:"¡Las 12 palabras de tu frase semilla — tu llave maestra!", style:"bottom:90px;left:18%", render:`<div style="width:55px;height:38px;background:#fdf6e3;border:1px solid #aaa;border-radius:2px;padding:3px;box-shadow:2px 2px 4px rgba(0,0,0,0.5)"><div style="font-size:0.32rem;color:#000;font-family:'Space Mono',monospace;font-weight:bold;border-bottom:1px solid #ccc;margin-bottom:1px">FRASE SEMILLA 🔑</div><div style="font-size:0.28rem;color:#333;line-height:1.3;display:grid;grid-template-columns:1fr 1fr">luna cielo rojo mar sol viento árbol paz</div></div>` },
+      { id:4, icon:"☕", label:"Pago en café con Bitcoin", tip:"¡Pagando el café con Lightning — Bitcoin en la vida real!", style:"bottom:85px;right:20%", render:`<div style="position:relative"><div style="font-size:2rem;filter:drop-shadow(2px 2px 4px rgba(0,0,0,0.6))">☕</div><div style="position:absolute;top:-10px;right:-10px;background:rgba(22,163,74,0.9);color:white;font-family:'Bangers',cursive;font-size:0.45rem;padding:1px 4px;border-radius:3px;white-space:nowrap">⚡ PAGADO</div></div>` }
     ],
-    decorHTML: `<div class="deco" style="top:30px;left:42%;font-size:1.8rem;opacity:0.15">🏪</div>`
+    decorHTML: `
+      <div class="deco" style="top:30px;left:42%;font-size:1.8rem;opacity:0.15">🏪</div>
+      <div class="deco" style="bottom:65px;left:30%;width:40%;height:8px;background:#2d1a05;border:1px solid #4a2c0a;border-radius:1px"></div>
+      <div class="deco" style="bottom:73px;left:32%;width:36%;height:4px;background:#1a0d03;border-radius:1px"></div>
+      <div class="deco" style="bottom:77px;left:49%;width:2px;height:25px;background:rgba(139,90,43,0.5)"></div>
+      <div class="deco" style="top:0;right:0;left:0;height:3px;background:linear-gradient(90deg,transparent,rgba(22,163,74,0.2),transparent)"></div>
+      <div class="deco" style="top:20px;right:35%;font-size:0.5rem;color:rgba(22,163,74,0.4);font-family:'Space Mono',monospace">⚡ LIGHTNING ENABLED</div>`
   },
   victory: {
     emoji: "⚡",
     title: "¡CAPÍTULO 5 COMPLETADO!",
-    body: `Una billetera Bitcoin guarda tus <span class="fact-highlight">claves privadas</span>, no tus Bitcoin. La Red <span class="fact-highlight">Lightning</span> permite pagos instantáneos y baratos.`,
+    body: `Una billetera Bitcoin guarda tus <span class="fact-highlight">claves privadas</span>, no tus Bitcoin. La Red <span class="fact-highlight">Lightning</span> permite pagos instantáneos y baratos. ¡Con Bitcoin puedes ser tu propio banco, sin pedir permiso a nadie!`,
     facts: [
       { icon:"🔑", label:"Claves privadas", value:"¡NUNCA COMPARTAS!" },
       { icon:"⚡", label:"Lightning — velocidad", value:"INSTANTÁNEO" },
@@ -935,6 +1192,7 @@ function renderMap() {
   const done = completedChapters.size;
 
   chapters.forEach((ch, idx) => {
+    // Path connector
     if (idx > 0) {
       const line = document.createElement('div');
       line.className = 'path-line';
@@ -964,6 +1222,7 @@ function renderMap() {
     path.appendChild(node);
   });
 
+  // Progress
   const pct = Math.round((done / total) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
   document.getElementById('progress-label').textContent = `PROGRESO: ${done} / ${total} CAPÍTULOS COMPLETADOS`;
@@ -975,7 +1234,6 @@ function renderMap() {
 function startChapter(idx) {
   currentChapter = idx;
   foundObjects = new Set();
-  attemptsLeft = MAX_ATTEMPTS;
   renderComic();
   goTo('screen-comic');
 }
@@ -1055,7 +1313,7 @@ function checkAnswer(btn, isCorrect) {
 }
 
 // ═══════════════════════════════════════════════════
-// SCENE — CON SISTEMA DE INTENTOS
+// SCENE
 // ═══════════════════════════════════════════════════
 function renderAndGoScene() {
   const ch = chapters[currentChapter];
@@ -1102,32 +1360,27 @@ function renderAndGoScene() {
 }
 
 function updateAttemptsDisplay() {
-  const counter = document.getElementById('attempts-counter');
   let hearts = '';
   for (let i = 0; i < MAX_ATTEMPTS; i++) {
     hearts += i < attemptsLeft ? '❤️' : '🖤';
   }
-  counter.textContent = hearts;
+  document.getElementById('attempts-display').textContent = hearts;
 }
 
 function handleWrongClick(e) {
   const isObj = e.target.closest('.hidden-obj');
-  if (isObj) return; // No contar si hizo click en objeto
-
+  if (isObj) return;
+  
   attemptsLeft--;
   updateAttemptsDisplay();
 
-  // Flash rojo
   const flash = document.createElement('div');
   flash.className = 'wrong-flash';
   document.body.appendChild(flash);
   setTimeout(() => flash.remove(), 350);
 
   if (attemptsLeft <= 0) {
-    // Game Over
-    setTimeout(() => {
-      goTo('screen-gameover');
-    }, 500);
+    setTimeout(() => goTo('screen-gameover'), 500);
   }
 }
 
