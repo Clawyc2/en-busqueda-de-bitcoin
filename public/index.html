@@ -73,42 +73,85 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .map-progress-bar { height: 8px; background: rgba(255,255,255,0.08); border-radius: 4px; overflow: hidden; }
 .map-progress-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--orange)); border-radius: 4px; transition: width 0.8s ease; }
 
-/* ═══ COMIC READER ═══ */
-#screen-comic { background: var(--paper); align-items: center; padding: 0.5rem; min-height: 100vh; }
-.comic-header { width: 100%; max-width: 700px; display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem; padding: 0 0.5rem; }
-.back-btn { font-family: 'Bangers', cursive; font-size: 0.9rem; color: rgba(0,0,0,0.4); background: transparent; border: 2px solid rgba(0,0,0,0.2); padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; }
-.comic-chapter-title { font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--ink); letter-spacing: 2px; }
-.page-indicator { font-family: 'Space Mono', monospace; font-size: 0.8rem; color: rgba(0,0,0,0.4); }
+/* ═══ COMIC READER - HORIZONTAL ═══ */
+#screen-comic { background: var(--ink); align-items: center; justify-content: center; padding: 1rem; min-height: 100vh; }
+.comic-container { width: 100%; max-width: 1200px; display: flex; flex-direction: column; align-items: center; }
 
-/* Comic Book Container */
-.comic-book { width: 100%; max-width: 700px; perspective: 2000px; position: relative; }
-.comic-page { width: 100%; aspect-ratio: 3/4; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1); cursor: pointer; }
-.comic-page.flipped { transform: rotateY(-180deg); }
-.comic-page-front, .comic-page-back { position: absolute; inset: 0; backface-visibility: hidden; border-radius: 4px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.3); }
-.comic-page-front { background: white; }
-.comic-page-back { transform: rotateY(180deg); background: white; }
-.comic-page img { width: 100%; height: 100%; object-fit: contain; background: white; }
+.comic-header { width: 100%; display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; padding: 0 0.5rem; }
+.back-btn { font-family: 'Bangers', cursive; font-size: 0.9rem; color: rgba(255,255,255,0.6); background: transparent; border: 2px solid rgba(255,255,255,0.2); padding: 0.3rem 0.8rem; border-radius: 4px; cursor: pointer; }
+.back-btn:hover { border-color: var(--gold); color: var(--gold); }
+.comic-chapter-title { font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--gold); letter-spacing: 2px; }
+.page-indicator { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); padding: 0.3rem 0.8rem; border-radius: 4px; }
 
-/* Page navigation */
-.comic-nav { width: 100%; max-width: 700px; display: flex; justify-content: center; gap: 1rem; margin-top: 1rem; }
-.nav-btn { font-family: 'Bangers', cursive; font-size: 1rem; letter-spacing: 1px; background: var(--orange); color: white; border: 3px solid var(--ink); padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer; box-shadow: 3px 3px 0 var(--ink); transition: transform 0.1s; }
-.nav-btn:hover:not(:disabled) { transform: translate(-2px,-2px); box-shadow: 5px 5px 0 var(--ink); }
-.nav-btn:disabled { opacity: 0.4; cursor: not-allowed; }
-.nav-btn.continue { background: var(--green); }
+/* Comic Page - HORIZONTAL */
+.comic-page-container { 
+  width: 100%; 
+  max-width: 1100px; 
+  position: relative;
+  background: var(--paper);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+}
+.comic-page-wrapper {
+  width: 100%;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: white;
+}
+.comic-page-wrapper img { 
+  width: 100%; 
+  height: 100%; 
+  object-fit: contain; 
+  background: white;
+}
 
-/* Page turn hint */
-.turn-hint { position: absolute; bottom: 10px; right: 10px; background: rgba(0,0,0,0.7); color: white; padding: 0.3rem 0.6rem; border-radius: 4px; font-size: 0.7rem; font-family: 'Space Mono', monospace; animation: pulse 2s infinite; pointer-events: none; }
-@keyframes pulse { 0%,100%{opacity:0.7} 50%{opacity:1} }
+/* Navigation */
+.comic-nav { 
+  width: 100%; 
+  max-width: 1100px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center;
+  gap: 1rem; 
+  margin-top: 1.2rem; 
+}
+.nav-btn { 
+  font-family: 'Bangers', cursive; 
+  font-size: 1.1rem; 
+  letter-spacing: 2px; 
+  background: var(--orange); 
+  color: white; 
+  border: 3px solid var(--ink); 
+  padding: 0.6rem 2rem; 
+  border-radius: 6px; 
+  cursor: pointer; 
+  box-shadow: 4px 4px 0 var(--ink); 
+  transition: transform 0.1s, box-shadow 0.1s; 
+}
+.nav-btn:hover:not(:disabled) { transform: translate(-2px,-2px); box-shadow: 6px 6px 0 var(--ink); }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; transform: none; box-shadow: 4px 4px 0 var(--ink); }
+.nav-btn.next { background: var(--gold); color: var(--ink); }
+.nav-btn.question { background: var(--green); }
+
+/* Page dots */
+.page-dots { display: flex; gap: 0.5rem; justify-content: center; margin-top: 0.8rem; }
+.page-dot { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.2); cursor: pointer; transition: all 0.2s; }
+.page-dot.active { background: var(--gold); transform: scale(1.2); }
+.page-dot:hover { background: rgba(247,201,72,0.5); }
 
 /* ═══ QUESTION ═══ */
 #screen-question { background: var(--ink); align-items: center; justify-content: center; padding: 2rem; }
-.question-box { max-width: 580px; width: 100%; text-align: center; }
+.question-box { max-width: 600px; width: 100%; text-align: center; }
 .question-badge { font-family: 'Bangers', cursive; font-size: 0.95rem; letter-spacing: 3px; color: var(--ink); background: var(--orange); display: inline-block; padding: 0.3rem 1.5rem; border: 3px solid var(--ink); box-shadow: 4px 4px 0 var(--ink); margin-bottom: 1.2rem; }
-.question-text { font-family: 'Bangers', cursive; font-size: clamp(1.3rem,3.5vw,1.9rem); color: white; letter-spacing: 1px; line-height: 1.35; margin-bottom: 0.6rem; background: rgba(255,255,255,0.05); border: 3px solid rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 8px; }
+.question-text { font-family: 'Bangers', cursive; font-size: clamp(1.2rem,3.5vw,1.7rem); color: white; letter-spacing: 1px; line-height: 1.4; margin-bottom: 0.6rem; background: rgba(255,255,255,0.05); border: 3px solid rgba(255,255,255,0.15); padding: 1.2rem; border-radius: 8px; }
 .question-hint { color: rgba(255,255,255,0.45); font-size: 0.8rem; margin-bottom: 1.5rem; font-style: italic; }
-.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1.2rem; }
-.answer-btn { font-family: 'Comic Neue', cursive; font-weight: 700; font-size: 0.9rem; background: rgba(255,255,255,0.07); color: white; border: 2.5px solid rgba(255,255,255,0.2); padding: 0.9rem; border-radius: 6px; cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.4; }
-.answer-btn:hover { background: rgba(247,201,72,0.12); border-color: var(--gold); color: var(--gold); transform: translateX(3px); }
+.answer-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-bottom: 1.2rem; }
+@media (max-width: 500px) { .answer-grid { grid-template-columns: 1fr; } }
+.answer-btn { font-family: 'Comic Neue', cursive; font-weight: 700; font-size: 0.95rem; background: rgba(255,255,255,0.07); color: white; border: 2.5px solid rgba(255,255,255,0.2); padding: 1rem; border-radius: 8px; cursor: pointer; transition: all 0.15s; text-align: left; line-height: 1.4; }
+.answer-btn:hover { background: rgba(247,201,72,0.12); border-color: var(--gold); color: var(--gold); }
 .answer-btn.correct { background: rgba(22,163,74,0.25); border-color: var(--green); color: #4ade80; }
 .answer-btn.wrong { background: rgba(220,38,38,0.25); border-color: var(--red); color: #f87171; animation: shake 0.4s ease; }
 @keyframes shake { 0%,100%{transform:translateX(0)} 25%{transform:translateX(-6px)} 75%{transform:translateX(6px)} }
@@ -125,17 +168,17 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .victory-content { text-align: center; max-width: 580px; position: relative; z-index: 2; }
 .victory-emoji { font-size: 4rem; display: block; margin-bottom: 0.8rem; animation: bounce 1s ease-in-out infinite; }
 @keyframes bounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-18px)} }
-.victory-title { font-family: 'Bangers', cursive; font-size: 2.8rem; color: var(--gold); letter-spacing: 4px; text-shadow: 4px 4px 0 var(--orange); margin-bottom: 0.8rem; }
+.victory-title { font-family: 'Bangers', cursive; font-size: 2.5rem; color: var(--gold); letter-spacing: 4px; text-shadow: 4px 4px 0 var(--orange); margin-bottom: 0.8rem; }
 .victory-message { background: rgba(255,255,255,0.04); border: 3px solid var(--gold); border-radius: 8px; padding: 1.2rem; margin-bottom: 1.2rem; }
-.verdict-text { font-family: 'Bangers', cursive; font-size: 1.4rem; color: var(--gold); letter-spacing: 1px; margin-bottom: 0.4rem; }
+.verdict-text { font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--gold); letter-spacing: 1px; margin-bottom: 0.4rem; }
 .verdict-body { color: rgba(255,255,255,0.8); font-size: 0.95rem; line-height: 1.7; }
 .fact-highlight { background: var(--gold); color: var(--ink); font-weight: 700; padding: 0.15rem 0.45rem; border-radius: 3px; }
-.facts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 1.2rem; }
+.facts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.5rem; margin-bottom: 1.2rem; }
 .fact-card { background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.12); border-radius: 6px; padding: 0.7rem; text-align: center; }
 .fact-card-icon { font-size: 1.3rem; margin-bottom: 0.2rem; }
 .fact-card-label { font-size: 0.65rem; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 1px; }
-.fact-card-value { font-family: 'Bangers', cursive; font-size: 1rem; color: white; letter-spacing: 1px; }
-.btn-secondary { font-family: 'Bangers', cursive; font-size: 1.2rem; letter-spacing: 2px; background: transparent; color: var(--gold); border: 2px solid var(--gold); padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer; margin-top: 0.8rem; transition: all 0.15s; }
+.fact-card-value { font-family: 'Bangers', cursive; font-size: 0.9rem; color: white; letter-spacing: 1px; }
+.btn-secondary { font-family: 'Bangers', cursive; font-size: 1.1rem; letter-spacing: 2px; background: transparent; color: var(--gold); border: 2px solid var(--gold); padding: 0.5rem 1.5rem; border-radius: 4px; cursor: pointer; margin-top: 0.8rem; transition: all 0.15s; }
 .btn-secondary:hover { background: rgba(247,201,72,0.1); }
 .next-chapter-hint { color: rgba(255,255,255,0.35); font-size: 0.75rem; margin-top: 1rem; font-family: 'Space Mono', monospace; }
 </style>
@@ -173,19 +216,25 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 
 <!-- ═══════════════ COMIC READER ═══════════════ -->
 <div class="screen" id="screen-comic">
-  <div class="comic-header">
-    <button class="back-btn" onclick="goTo('screen-map')">← MAPA</button>
-    <div class="comic-chapter-title" id="comic-title">CAPÍTULO 1</div>
-    <div class="page-indicator" id="page-indicator">1 / 4</div>
-  </div>
-  
-  <div class="comic-book" id="comic-book">
-    <!-- Pages will be generated by JS -->
-  </div>
-  
-  <div class="comic-nav">
-    <button class="nav-btn" id="btn-prev" onclick="prevPage()" disabled>← ANTERIOR</button>
-    <button class="nav-btn continue" id="btn-next" onclick="nextPageOrQuestion()">SIGUIENTE ➜</button>
+  <div class="comic-container">
+    <div class="comic-header">
+      <button class="back-btn" onclick="goTo('screen-map')">← MAPA</button>
+      <div class="comic-chapter-title" id="comic-title">CAPÍTULO 1</div>
+      <div class="page-indicator" id="page-indicator">1 / 4</div>
+    </div>
+    
+    <div class="comic-page-container">
+      <div class="comic-page-wrapper">
+        <img id="comic-image" src="" alt="Cómic">
+      </div>
+    </div>
+    
+    <div class="page-dots" id="page-dots"></div>
+    
+    <div class="comic-nav">
+      <button class="nav-btn" id="btn-prev" onclick="prevPage()">← ANTERIOR</button>
+      <button class="nav-btn next" id="btn-next" onclick="nextPageOrQuestion()">SIGUIENTE ➜</button>
+    </div>
   </div>
 </div>
 
@@ -236,7 +285,7 @@ const chapters = [
     mapDesc: "Satoshi Nakamoto y el año 2008",
     mapIcon: "₿",
     title: "CAPÍTULO 1: EL NACIMIENTO DE BITCOIN",
-    // Imágenes del cómic - nivel 1
+    // Imágenes del cómic - HORIZONTAL
     pages: [
       "images/nivel%201/1%20(1).png",
       "images/nivel%201/2.png",
@@ -287,35 +336,18 @@ const chapters = [
       title: "¡CAPÍTULO 1 COMPLETADO!",
       body: `Has aprendido sobre el <span class="fact-highlight">origen de Bitcoin</span>. Satoshi Nakamoto publicó el Whitepaper en <span class="fact-highlight">octubre de 2008</span> y minó el Genesis Block el <span class="fact-highlight">3 de enero de 2009</span>.`,
       facts: [
-        { icon: "🥷", label: "Creador", value: "SATOSHI NAKAMOTO" },
-        { icon: "📅", label: "Whitepaper", value: "31 OCT 2008" },
-        { icon: "⛏️", label: "Genesis Block", value: "3 ENE 2009" },
+        { icon: "🥷", label: "Creador", value: "SATOSHI" },
+        { icon: "📅", label: "Whitepaper", value: "OCT 2008" },
+        { icon: "⛏️", label: "Genesis", value: "3 ENE 2009" },
         { icon: "₿", label: "Recompensa", value: "50 BTC" }
       ]
     }
   },
-  // Capítulos 2-5 se pueden agregar después
-  {
-    id: 2, mapTitle: "¿POR QUÉ NECESITAMOS DINERO?", mapDesc: "Del trueque a las monedas", mapIcon: "💰",
-    title: "CAPÍTULO 2: ¿POR QUÉ NECESITAMOS DINERO?",
-    pages: [], questions: [],
-    victory: { emoji: "💰", title: "¡CAPÍTULO 2 COMPLETADO!", body: `Próximamente...`, facts: [] }
-  },
-  {
-    id: 3, mapTitle: "LA INFLACIÓN", mapDesc: "El ladrón invisible", mapIcon: "📉",
-    title: "CAPÍTULO 3: LA INFLACIÓN", pages: [], questions: [],
-    victory: { emoji: "📉", title: "¡CAPÍTULO 3 COMPLETADO!", body: `Próximamente...`, facts: [] }
-  },
-  {
-    id: 4, mapTitle: "BITCOIN COMO DINERO SÓLIDO", mapDesc: "Blockchain y descentralización", mapIcon: "🔗",
-    title: "CAPÍTULO 4: BITCOIN COMO DINERO SÓLIDO", pages: [], questions: [],
-    victory: { emoji: "🔗", title: "¡CAPÍTULO 4 COMPLETADO!", body: `Próximamente...`, facts: [] }
-  },
-  {
-    id: 5, mapTitle: "CÓMO USAR BITCOIN", mapDesc: "Billeteras y Lightning", mapIcon: "⚡",
-    title: "CAPÍTULO 5: CÓMO USAR BITCOIN", pages: [], questions: [],
-    victory: { emoji: "⚡", title: "¡CAPÍTULO 5 COMPLETADO!", body: `Próximamente...`, facts: [] }
-  }
+  // Capítulos 2-5 (placeholder)
+  { id: 2, mapTitle: "¿POR QUÉ NECESITAMOS DINERO?", mapDesc: "Del trueque a las monedas", mapIcon: "💰", title: "CAPÍTULO 2", pages: [], questions: [], victory: { emoji: "💰", title: "¡CAPÍTULO 2!", body: "Próximamente", facts: [] } },
+  { id: 3, mapTitle: "LA INFLACIÓN", mapDesc: "El ladrón invisible", mapIcon: "📉", title: "CAPÍTULO 3", pages: [], questions: [], victory: { emoji: "📉", title: "¡CAPÍTULO 3!", body: "Próximamente", facts: [] } },
+  { id: 4, mapTitle: "BITCOIN COMO DINERO SÓLIDO", mapDesc: "Blockchain y descentralización", mapIcon: "🔗", title: "CAPÍTULO 4", pages: [], questions: [], victory: { emoji: "🔗", title: "¡CAPÍTULO 4!", body: "Próximamente", facts: [] } },
+  { id: 5, mapTitle: "CÓMO USAR BITCOIN", mapDesc: "Billeteras y Lightning", mapIcon: "⚡", title: "CAPÍTULO 5", pages: [], questions: [], victory: { emoji: "⚡", title: "¡CAPÍTULO 5!", body: "Próximamente", facts: [] } }
 ];
 
 // ═══════════════════════════════════════════════════
@@ -359,11 +391,11 @@ function renderMap() {
 
   const pct = Math.round((done / total) * 100);
   document.getElementById('progress-fill').style.width = pct + '%';
-  document.getElementById('progress-label').textContent = `PROGRESO: ${done} / ${total} CAPÍTULOS COMPLETADOS`;
+  document.getElementById('progress-label').textContent = `PROGRESO: ${done} / ${total} CAPÍTULOS`;
 }
 
 // ═══════════════════════════════════════════════════
-// COMIC READER
+// COMIC READER - HORIZONTAL SLIDES
 // ═══════════════════════════════════════════════════
 function startChapter(idx) {
   currentChapter = idx;
@@ -376,73 +408,55 @@ function renderComic() {
   const ch = chapters[currentChapter];
   document.getElementById('comic-title').textContent = ch.title;
   
-  const book = document.getElementById('comic-book');
-  book.innerHTML = '';
+  // Mostrar imagen actual
+  const img = document.getElementById('comic-image');
+  img.src = ch.pages[currentPage];
   
-  ch.pages.forEach((imgPath, idx) => {
-    const page = document.createElement('div');
-    page.className = 'comic-page';
-    page.id = `page-${idx}`;
-    page.innerHTML = `
-      <div class="comic-page-front">
-        <img src="${imgPath}" alt="Página ${idx + 1}" loading="lazy">
-        ${idx < ch.pages.length - 1 ? '<div class="turn-hint">Toca para voltear →</div>' : ''}
-      </div>
-      <div class="comic-page-back"></div>
-    `;
-    page.onclick = () => {
-      if (!page.classList.contains('flipped') && idx < ch.pages.length - 1) {
-        flipPage(idx);
-      }
-    };
-    book.appendChild(page);
+  // Actualizar indicador
+  document.getElementById('page-indicator').textContent = `${currentPage + 1} / ${ch.pages.length}`;
+  
+  // Actualizar dots
+  const dots = document.getElementById('page-dots');
+  dots.innerHTML = '';
+  ch.pages.forEach((_, idx) => {
+    const dot = document.createElement('div');
+    dot.className = `page-dot ${idx === currentPage ? 'active' : ''}`;
+    dot.onclick = () => goToPage(idx);
+    dots.appendChild(dot);
   });
   
-  updatePageNav();
+  // Actualizar botones
+  document.getElementById('btn-prev').disabled = currentPage === 0;
+  
+  const btnNext = document.getElementById('btn-next');
+  if (currentPage >= ch.pages.length - 1) {
+    btnNext.textContent = '❓ RESPONDER';
+    btnNext.className = 'nav-btn question';
+  } else {
+    btnNext.textContent = 'SIGUIENTE ➜';
+    btnNext.className = 'nav-btn next';
+  }
 }
 
-function flipPage(idx) {
-  const page = document.getElementById(`page-${idx}`);
-  if (page && !page.classList.contains('flipped')) {
-    page.classList.add('flipped');
-    currentPage = idx + 1;
-    updatePageNav();
-  }
+function goToPage(idx) {
+  currentPage = idx;
+  renderComic();
 }
 
 function prevPage() {
   if (currentPage > 0) {
     currentPage--;
-    const page = document.getElementById(`page-${currentPage}`);
-    if (page) page.classList.remove('flipped');
-    updatePageNav();
+    renderComic();
   }
 }
 
 function nextPageOrQuestion() {
   const ch = chapters[currentChapter];
   if (currentPage < ch.pages.length - 1) {
-    flipPage(currentPage);
+    currentPage++;
+    renderComic();
   } else {
-    // Última página - ir a pregunta
     goToQuestion();
-  }
-}
-
-function updatePageNav() {
-  const ch = chapters[currentChapter];
-  const total = ch.pages.length;
-  
-  document.getElementById('page-indicator').textContent = `${currentPage + 1} / ${total}`;
-  document.getElementById('btn-prev').disabled = currentPage === 0;
-  
-  const btnNext = document.getElementById('btn-next');
-  if (currentPage >= total - 1) {
-    btnNext.textContent = '❓ RESPONDER PREGUNTA';
-    btnNext.classList.add('continue');
-  } else {
-    btnNext.textContent = 'SIGUIENTE ➜';
-    btnNext.classList.remove('continue');
   }
 }
 
@@ -451,7 +465,6 @@ function updatePageNav() {
 // ═══════════════════════════════════════════════════
 function goToQuestion() {
   const ch = chapters[currentChapter];
-  // Seleccionar 1 pregunta aleatoria del pool
   const randomQuestion = ch.questions[Math.floor(Math.random() * ch.questions.length)];
   
   document.getElementById('q-text').textContent = randomQuestion.text;
@@ -486,7 +499,7 @@ function checkAnswer(btn, isCorrect) {
     }, 1500);
   } else {
     btn.classList.add('wrong');
-    fb.textContent = '❌ ¡Incorrecto! Piensa bien...';
+    fb.textContent = '❌ ¡Incorrecto! Intenta de nuevo...';
     fb.className = 'feedback-msg show wrong';
     setTimeout(() => {
       btn.classList.remove('wrong');
@@ -522,14 +535,14 @@ function renderVictory() {
 
   if (nextIdx < chapters.length && chapters[nextIdx].pages.length > 0) {
     nextBtn.style.display = 'inline-block';
-    nextBtn.textContent = `CAP. ${chapters[nextIdx].id}: ${chapters[nextIdx].mapTitle.slice(0,20)}... ➜`;
+    nextBtn.textContent = `CAP. ${chapters[nextIdx].id}: ${chapters[nextIdx].mapTitle.slice(0,18)}... ➜`;
     hint.textContent = '';
   } else if (nextIdx < chapters.length) {
     nextBtn.style.display = 'none';
     hint.textContent = '🔜 El siguiente capítulo estará disponible pronto';
   } else {
     nextBtn.style.display = 'none';
-    hint.textContent = '🏆 ¡HAS COMPLETADO TODOS LOS CAPÍTULOS! ¡ERES UN MAESTRO BITCOIN!';
+    hint.textContent = '🏆 ¡COMPLETASTE TODOS LOS CAPÍTULOS!';
   }
 }
 
@@ -553,10 +566,10 @@ function goTo(screenId) {
 }
 
 function launchConfetti() {
-  const colors = ['#f7c948','#ff6b35','#2563eb','#16a34a','#dc2626','#ffffff','#7c3aed'];
+  const colors = ['#f7c948','#ff6b35','#2563eb','#16a34a','#dc2626','#ffffff'];
   const area = document.getElementById('confetti-area');
   area.innerHTML = '';
-  for (let i = 0; i < 55; i++) {
+  for (let i = 0; i < 50; i++) {
     const p = document.createElement('div');
     p.className = 'confetti-piece';
     p.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'0'};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;`;
