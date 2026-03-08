@@ -1126,7 +1126,24 @@ function startChapter(idx) {
   currentChapter = idx;
   currentPage = 0;
   renderComic();
+  preloadChapterImages(idx);
   goTo('screen-comic');
+}
+
+function preloadChapterImages(idx) {
+  const ch = chapters[idx];
+  if (!ch.pages || ch.pages.length === 0) return;
+  
+  ch.pages.forEach((src, i) => {
+    const img = new Image();
+    img.src = src;
+  });
+  
+  // También precargar imagen de búsqueda si existe
+  if (ch.searchImage) {
+    const searchImg = new Image();
+    searchImg.src = ch.searchImage;
+  }
 }
 
 function renderComic() {
