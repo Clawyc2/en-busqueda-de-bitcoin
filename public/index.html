@@ -83,6 +83,89 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
 .comic-chapter-title { font-family: 'Bangers', cursive; font-size: 1.3rem; color: var(--gold); letter-spacing: 2px; }
 .page-indicator { font-family: 'Space Mono', monospace; font-size: 0.9rem; color: rgba(255,255,255,0.5); background: rgba(255,255,255,0.1); padding: 0.3rem 0.8rem; border-radius: 4px; }
 
+/* Header right side */
+.header-right { display: flex; align-items: center; gap: 0.5rem; }
+.info-btn { 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  background: var(--blue); 
+  color: white; 
+  border: 2px solid white; 
+  font-family: 'Bangers', cursive; 
+  font-size: 1.2rem; 
+  cursor: pointer; 
+  transition: all 0.2s; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center;
+}
+.info-btn:hover { transform: scale(1.1); background: var(--gold); color: var(--ink); }
+
+/* Info Modal */
+.info-modal-overlay { 
+  position: fixed; 
+  inset: 0; 
+  background: rgba(0,0,0,0.85); 
+  display: none; 
+  align-items: center; 
+  justify-content: center; 
+  z-index: 1000; 
+  padding: 1rem;
+}
+.info-modal-overlay.show { display: flex; }
+.info-modal { 
+  background: var(--paper); 
+  color: var(--ink); 
+  border-radius: 12px; 
+  max-width: 600px; 
+  width: 100%; 
+  max-height: 85vh; 
+  overflow-y: auto; 
+  box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+  animation: modalPop 0.3s ease;
+}
+@keyframes modalPop { 
+  0% { transform: scale(0.8); opacity: 0; } 
+  100% { transform: scale(1); opacity: 1; } 
+}
+.info-modal-header { 
+  display: flex; 
+  align-items: center; 
+  gap: 0.5rem; 
+  padding: 1rem 1.2rem; 
+  border-bottom: 2px solid rgba(0,0,0,0.1); 
+  position: sticky; 
+  top: 0; 
+  background: var(--paper);
+}
+.info-modal-icon { font-size: 1.5rem; }
+.info-modal-title { font-family: 'Bangers', cursive; font-size: 1.3rem; letter-spacing: 2px; flex: 1; }
+.info-modal-close { 
+  background: rgba(0,0,0,0.1); 
+  border: none; 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  font-size: 1.2rem; 
+  cursor: pointer; 
+  color: var(--ink);
+  transition: all 0.2s;
+}
+.info-modal-close:hover { background: var(--red); color: white; }
+.info-modal-content { 
+  padding: 1.2rem; 
+  font-size: 0.95rem; 
+  line-height: 1.8; 
+}
+.info-modal-content p { margin-bottom: 1rem; }
+.info-modal-content .highlight { 
+  background: var(--gold); 
+  padding: 0.1rem 0.4rem; 
+  border-radius: 3px; 
+  font-weight: 700; 
+}
+
 /* Comic Page - HORIZONTAL */
 .comic-page-container { 
   width: 100%; 
@@ -160,6 +243,7 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
   }
   .back-btn { font-size: 0.8rem; padding: 0.3rem 0.6rem; }
   .page-indicator { font-size: 0.8rem; }
+  .info-btn { width: 28px; height: 28px; font-size: 1rem; }
   
   .comic-page-container {
     border-radius: 4px;
@@ -190,6 +274,20 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
   
   .page-dots { margin-top: 0.5rem; }
   .page-dot { width: 10px; height: 10px; }
+  
+  /* Modal responsive */
+  .info-modal { 
+    max-height: 90vh; 
+    margin: 0.5rem;
+    border-radius: 8px;
+  }
+  .info-modal-header { padding: 0.8rem 1rem; }
+  .info-modal-title { font-size: 1.1rem; }
+  .info-modal-content { 
+    padding: 1rem; 
+    font-size: 0.9rem; 
+    line-height: 1.7;
+  }
 }
 
 @media (max-width: 400px) {
@@ -287,7 +385,10 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
     <div class="comic-header">
       <button class="back-btn" onclick="goTo('screen-map')">← MAPA</button>
       <div class="comic-chapter-title" id="comic-title">CAPÍTULO 1</div>
-      <div class="page-indicator" id="page-indicator">1 / 4</div>
+      <div class="header-right">
+        <button class="info-btn" id="info-btn" onclick="showInfo()">?</button>
+        <div class="page-indicator" id="page-indicator">1 / 4</div>
+      </div>
     </div>
     
     <div class="comic-page-container">
@@ -301,6 +402,20 @@ body { background: var(--ink); font-family: 'Comic Neue', cursive; overflow-x: h
     <div class="comic-nav">
       <button class="nav-btn" id="btn-prev" onclick="prevPage()">← ANTERIOR</button>
       <button class="nav-btn next" id="btn-next" onclick="nextPageOrQuestion()">SIGUIENTE ➜</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ INFO MODAL ═══════════════ -->
+<div class="info-modal-overlay" id="info-modal" onclick="closeInfo()">
+  <div class="info-modal" onclick="event.stopPropagation()">
+    <div class="info-modal-header">
+      <span class="info-modal-icon">💡</span>
+      <span class="info-modal-title">¿Sabías que...?</span>
+      <button class="info-modal-close" onclick="closeInfo()">✕</button>
+    </div>
+    <div class="info-modal-content" id="info-modal-content">
+      <!-- Contenido dinámico -->
     </div>
   </div>
 </div>
@@ -358,6 +473,36 @@ const chapters = [
       "images/nivel%201/2.png",
       "images/nivel%201/3.png",
       "images/nivel%201/4.png"
+    ],
+    // Información extra de cada página
+    pageExtras: [
+      {
+        title: "La Crisis de 2008",
+        content: `<p>En el año <span class="highlight">2008</span> el sistema financiero mundial se metió en un problema muy grande.</p>
+<p>Durante muchos años, los bancos estuvieron prestando dinero para comprar casas. Hasta ahí todo bien. El problema fue que empezaron a prestar dinero casi a cualquiera, incluso a personas que en realidad no tenían cómo pagar esos préstamos.</p>
+<p>Mientras la economía iba bien, nadie decía nada. Las casas subían de precio y parecía que todo funcionaba perfecto.</p>`
+      },
+      {
+        title: "El Colapso",
+        content: `<p>Pero llegó el momento en que muchas personas dejaron de poder pagar sus hipotecas. Y cuando eso empezó a pasar una y otra vez… el sistema comenzó a tambalearse.</p>
+<p>Los bancos empezaron a perder muchísimo dinero.</p>
+<p>Uno de los casos más famosos fue <span class="highlight">Lehman Brothers</span>, un banco enorme de Estados Unidos que quebró en septiembre de 2008. Cuando eso pasó, el miedo se regó por todos los mercados financieros.</p>`
+      },
+      {
+        title: "Las Consecuencias",
+        content: `<p>Las bolsas se desplomaron, muchas empresas tuvieron problemas y millones de personas en el mundo perdieron su trabajo, sus ahorros o hasta su casa.</p>
+<p>Para evitar que todo el sistema colapsara, los gobiernos tuvieron que rescatar a varios bancos usando dinero público, es decir, <span class="highlight">dinero de la gente</span>.</p>
+<p>Y ahí fue cuando mucha gente empezó a preguntarse algo muy importante:</p>
+<p><strong>¿Por qué el dinero y los bancos funcionan de esta manera?</strong></p>`
+      },
+      {
+        title: "Una Nueva Idea",
+        content: `<p><strong>¿De verdad necesitamos confiar siempre en los bancos para manejar nuestro dinero?</strong></p>
+<p>En medio de toda esa crisis, alguien empezó a pensar en una idea diferente.</p>
+<p>Una forma de enviar dinero por internet <span class="highlight">sin depender de bancos</span>.</p>
+<p>Y esa idea estaba a punto de cambiar la historia.</p>
+<p>🚀 <em>Continúa en el siguiente capítulo...</em></p>`
+      }
     ],
     // Pool de 4 preguntas - se selecciona 1 aleatoriamente
     questions: [
@@ -481,6 +626,11 @@ function renderComic() {
   
   // Actualizar indicador
   document.getElementById('page-indicator').textContent = `${currentPage + 1} / ${ch.pages.length}`;
+  
+  // Mostrar/ocultar botón de info según si hay extras
+  const infoBtn = document.getElementById('info-btn');
+  const hasExtra = ch.pageExtras && ch.pageExtras[currentPage];
+  infoBtn.style.display = hasExtra ? 'flex' : 'none';
   
   // Actualizar dots
   const dots = document.getElementById('page-dots');
@@ -642,6 +792,31 @@ function launchConfetti() {
     p.style.cssText = `left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>0.5?'50%':'0'};animation-duration:${1.5+Math.random()*2}s;animation-delay:${Math.random()}s;width:${6+Math.random()*8}px;height:${6+Math.random()*8}px;`;
     area.appendChild(p);
   }
+}
+
+// ═══════════════════════════════════════════════════
+// INFO MODAL
+// ═══════════════════════════════════════════════════
+function showInfo() {
+  const ch = chapters[currentChapter];
+  const extra = ch.pageExtras && ch.pageExtras[currentPage];
+  
+  if (extra) {
+    const modal = document.getElementById('info-modal');
+    const content = document.getElementById('info-modal-content');
+    const titleEl = document.querySelector('.info-modal-title');
+    
+    titleEl.textContent = extra.title;
+    content.innerHTML = extra.content;
+    modal.classList.add('show');
+    document.body.style.overflow = 'hidden';
+  }
+}
+
+function closeInfo() {
+  const modal = document.getElementById('info-modal');
+  modal.classList.remove('show');
+  document.body.style.overflow = '';
 }
 
 // Init
