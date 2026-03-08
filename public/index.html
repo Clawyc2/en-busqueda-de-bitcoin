@@ -1073,7 +1073,78 @@ const chapters = [
     }
   },
   // Capítulos 4-5 (placeholder)
-  { id: 4, mapTitle: "BITCOIN COMO DINERO SÓLIDO", mapDesc: "Blockchain y descentralización", mapIcon: "🔗", title: "CAPÍTULO 4", pages: [], questions: [], victory: { emoji: "🔗", title: "¡CAPÍTULO 4!", body: "Próximamente", facts: [] } },
+  {
+    id: 4,
+    mapTitle: "BITCOIN COMO DINERO SÓLIDO",
+    mapDesc: "Blockchain y descentralización",
+    mapIcon: "🔗",
+    title: "CAPÍTULO 4: BITCOIN COMO DINERO SÓLIDO",
+    pages: [
+      "images/Nivel%204/1.png",
+      "images/Nivel%204/2.png",
+      "images/Nivel%204/3.png",
+      "images/Nivel%204/4.png",
+      "images/Nivel%204/5.png",
+      "images/Nivel%204/6.png"
+    ],
+    pageExtras: [
+      {
+        title: "Blockchain",
+        content: `<p>La <span class="highlight">blockchain</span> es el corazón de Bitcoin. Es un registro público e inmutable de todas las transacciones.</p>
+<p>Cada bloque contiene transacciones y un enlace al bloque anterior, formando una cadena. Si alguien intentara cambiar un bloque antiguo, todos los siguientes se volverían inválidos.</p>`
+      },
+      {
+        title: "Descentralización",
+        content: `<p>En lugar de un servidor central, la red está compuesta por miles de <span class="highlight">nodos</span> independientes. Ninguna persona, empresa o gobierno controla la red.</p>`
+      },
+      {
+        title: "Minería",
+        content: `<p>Los <span class="highlight">mineros</span> dedican poder computacional a resolver problemas matemáticos. Cuando encuentran la solución, añaden un nuevo bloque y reciben bitcoins como recompensa.</p>`
+      },
+      {
+        title: "Suministro Limitado",
+        content: `<p>Bitcoin tiene un límite matemático: <span class="highlight">solo existirán 21 millones de bitcoins</span>. Esto protege contra la inflación.</p>`
+      },
+      {
+        title: "Seguridad",
+        content: `<p>Bitcoin usa <span class="highlight">criptografía</span> para seguridad. Tu clave privada es como una llave que solo tú tienes para gastar tus bitcoins.</p>`
+      },
+      {
+        title: "Transparencia",
+        content: `<p>Todas las transacciones son públicas y verificables, pero las direcciones no revelan tu identidad real.</p>`
+      }
+    ],
+    questions: [
+      {
+        text: "¿Qué es la blockchain?",
+        answers: [
+          { text: "A) Una cadena de bancos", correct: false },
+          { text: "B) Un registro público e inmutable de transacciones", correct: true },
+          { text: "C) Un tipo de moneda", correct: false },
+          { text: "D) Una empresa", correct: false }
+        ]
+      },
+      {
+        text: "¿Cuántos bitcoins existirán en total?",
+        answers: [
+          { text: "A) Infinitos", correct: false },
+          { text: "B) 100 millones", correct: false },
+          { text: "C) 21 millones", correct: true },
+          { text: "D) 1 millón", correct: false }
+        ]
+      }
+    ],
+    victory: {
+      emoji: "🔗",
+      title: "¡CAPÍTULO 4 COMPLETADO!",
+      body: `Has aprendido sobre <span class="fact-highlight">Blockchain y el suministro limitado de Bitcoin</span>.`,
+      facts: [
+        { icon: "⛓️", label: "Blockchain", value: "INMUTABLE" },
+        { icon: "🌐", label: "Red", value: "DESCENTRALIZADA" },
+        { icon: "📊", label: "Límite", value: "21M BTC" }
+      ]
+    }
+  },
   { id: 5, mapTitle: "CÓMO USAR BITCOIN", mapDesc: "Billeteras y Lightning", mapIcon: "⚡", title: "CAPÍTULO 5", pages: [], questions: [], victory: { emoji: "⚡", title: "¡CAPÍTULO 5!", body: "Próximamente", facts: [] } }
 ];
 
