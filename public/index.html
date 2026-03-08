@@ -1256,15 +1256,17 @@ function startSearch() {
     return;
   }
   
+  // Primero limpiar marcadores existentes del DOM
+  clearSearchMarkers();
+  
+  // Luego resetear variables
   searchLives = 3;
   searchObjectsFound = 0;
   currentSearchObjectIndex = 0;
-  searchMarkers = [];
   
   document.getElementById('search-image').src = ch.searchImage;
   document.getElementById('search-title').textContent = `🔍 CAPÍTULO ${ch.id}: BUSCAR`;
   updateSearchUI();
-  clearSearchMarkers();
   
   goTo('screen-search');
 }
@@ -1335,6 +1337,10 @@ function handleSearchClick(event) {
     if (searchLives <= 0) {
       // Game Over
       setTimeout(() => {
+        clearSearchMarkers();
+        searchLives = 3;
+        searchObjectsFound = 0;
+        currentSearchObjectIndex = 0;
         alert('💔 ¡Se acabaron los intentos! Intenta de nuevo.');
         goTo('screen-map');
       }, 500);
