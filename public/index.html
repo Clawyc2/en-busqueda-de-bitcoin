@@ -576,7 +576,7 @@ let completedChapters = new Set();
 // Search state
 let searchLives = 3;
 let searchObjectsFound = 0;
-let currentSearchObjectIndex = 0;
+let foundObjects = [];
 let searchMarkers = [];
 
 // ═══════════════════════════════════════════════════
@@ -1262,7 +1262,7 @@ function startSearch() {
   // Luego resetear variables
   searchLives = 3;
   searchObjectsFound = 0;
-  currentSearchObjectIndex = 0;
+  foundObjects = [];
   
   document.getElementById('search-image').src = ch.searchImage;
   document.getElementById('search-title').textContent = `🔍 CAPÍTULO ${ch.id}: BUSCAR`;
@@ -1281,9 +1281,10 @@ function updateSearchUI() {
   });
   document.getElementById('lives-count').textContent = searchLives;
   
-  // Actualizar objeto actual
-  const currentObj = ch.searchObjects[currentSearchObjectIndex];
-  document.getElementById('current-object-name').textContent = currentObj ? currentObj.name : '¡Completado!';
+  // Mostrar objetos que faltan encontrar
+  const remaining = ch.searchObjects.filter((obj, idx) => !foundObjects.includes(idx));
+  const names = remaining.map(obj => obj.name).join(', ');
+  document.getElementById('current-object-name').textContent = remaining.length > 0 ? names : '¡Completado!';
   
   // Mostrar/ocultar botón continuar
   document.getElementById('btn-search-next').style.display = 
@@ -1294,7 +1295,6 @@ function handleSearchClick(event) {
   if (searchLives <= 0) return;
   
   const ch = chapters[currentChapter];
-  const container = document.getElementById('search-container');
   const img = document.getElementById('search-image');
   
   // Calcular posición relativa (0-100%)
@@ -1302,25 +1302,36 @@ function handleSearchClick(event) {
   const x = ((event.clientX - rect.left) / rect.width) * 100;
   const y = ((event.clientY - rect.top) / rect.height) * 100;
   
-  const currentObj = ch.searchObjects[currentSearchObjectIndex];
-  if (!currentObj) return;
+  // Buscar si el click coincide con algún objeto NO encontrado aún
+  let foundIndex = -1;
+  for (let i = 0; i < ch.searchObjects.length; i++) {
+    const obj = ch.searchObjects[i];
+    // Saltar si ya fue encontrado
+    if (foundObjects && foundObjects.includes(i)) continue;
+    
+    const distance = Math.sqrt(
+      Math.pow(x - obj.x, 2) + 
+      Math.pow(y - obj.y, 2)
+    );
+    
+    if (distance <= obj.radius) {
+      foundIndex = i;
+      break;
+    }
+  }
   
-  // Verificar si acertó
-  const distance = Math.sqrt(
-    Math.pow(x - currentObj.x, 2) + 
-    Math.pow(y - currentObj.y, 2)
-  );
-  
-  if (distance <= currentObj.radius) {
+  if (foundIndex >= 0) {
     // ¡Acertó!
     addSearchMarker(x, y, true);
+    if (!foundObjects) foundObjects = [];
+    foundObjects.push(foundIndex);
     searchObjectsFound++;
-    currentSearchObjectIndex++;
     
     if (searchObjectsFound >= ch.searchObjects.length) {
       // ¡Completó todos! Ir a victoria
       updateSearchUI();
       setTimeout(() => {
+        completedChapters.add(currentChapter);
         launchConfetti();
         renderVictory();
         goTo('screen-victory');
@@ -1329,7 +1340,7 @@ function handleSearchClick(event) {
       updateSearchUI();
     }
   } else {
-    // Falló
+    // Falló - no acertó ningún objeto
     addSearchMarker(x, y, false);
     searchLives--;
     updateSearchUI();
@@ -1340,7 +1351,7 @@ function handleSearchClick(event) {
         clearSearchMarkers();
         searchLives = 3;
         searchObjectsFound = 0;
-        currentSearchObjectIndex = 0;
+        foundObjects = [];
         alert('💔 ¡Se acabaron los intentos! Intenta de nuevo.');
         goTo('screen-map');
       }, 500);
