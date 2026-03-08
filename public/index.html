@@ -596,8 +596,76 @@ const chapters = [
       ]
     }
   },
-  // Capítulos 2-5 (placeholder)
-  { id: 2, mapTitle: "¿POR QUÉ NECESITAMOS DINERO?", mapDesc: "Del trueque a las monedas", mapIcon: "💰", title: "CAPÍTULO 2", pages: [], questions: [], victory: { emoji: "💰", title: "¡CAPÍTULO 2!", body: "Próximamente", facts: [] } },
+  // Capítulo 2
+  {
+    id: 2,
+    mapTitle: "¿POR QUÉ NECESITAMOS DINERO?",
+    mapDesc: "Del trueque a las monedas",
+    mapIcon: "💰",
+    title: "CAPÍTULO 2: ¿POR QUÉ NECESITAMOS DINERO?",
+    pages: [
+      "images/Nivel%202/1.png",
+      "images/Nivel%202/2.png",
+      "images/Nivel%202/3.png",
+      "images/Nivel%202/4.png"
+    ],
+    pageExtras: [
+      { title: "Más información", content: "<p>Contenido próximamente...</p>" },
+      { title: "Más información", content: "<p>Contenido próximamente...</p>" },
+      { title: "Más información", content: "<p>Contenido próximamente...</p>" },
+      { title: "Más información", content: "<p>Contenido próximamente...</p>" }
+    ],
+    questions: [
+      {
+        text: "¿Cómo intercambiaban bienes las personas antes de que existiera el dinero?",
+        answers: [
+          { text: "A) Usando tarjetas de crédito", correct: false },
+          { text: "B) Mediante el trueque", correct: true },
+          { text: "C) Usando bancos", correct: false },
+          { text: "D) Con transferencias electrónicas", correct: false }
+        ]
+      },
+      {
+        text: "¿Cuál era el principal problema del trueque?",
+        answers: [
+          { text: "A) Los productos eran demasiado caros", correct: false },
+          { text: "B) Las dos personas debían querer exactamente lo que el otro tenía", correct: true },
+          { text: "C) Había demasiado dinero circulando", correct: false },
+          { text: "D) No existían mercados", correct: false }
+        ]
+      },
+      {
+        text: "¿Cuál de estas es una función del dinero?",
+        answers: [
+          { text: "A) Hacer que las cosas sean gratis", correct: false },
+          { text: "B) Crear más productos", correct: false },
+          { text: "C) Servir como medio de intercambio", correct: true },
+          { text: "D) Eliminar el comercio", correct: false }
+        ]
+      },
+      {
+        text: "¿Qué puede suceder cuando se crea demasiado dinero en la economía?",
+        answers: [
+          { text: "A) Los precios bajan mucho", correct: false },
+          { text: "B) Las personas dejan de comprar", correct: false },
+          { text: "C) Desaparece el comercio", correct: false },
+          { text: "D) Ocurre inflación y los precios suben", correct: true }
+        ]
+      }
+    ],
+    victory: {
+      emoji: "💰",
+      title: "¡CAPÍTULO 2 COMPLETADO!",
+      body: `Has aprendido sobre el <span class="fact-highlight">origen del dinero</span>. Desde el trueque hasta las monedas, el dinero evolucionó para facilitar el intercambio. Pero cuando se crea demasiado... <span class="fact-highlight">la inflación aparece</span>.`,
+      facts: [
+        { icon: "🔄", label: "Sistema", value: "TRUEQUE" },
+        { icon: "🪙", label: "Problema", value: "COINCIDENCIA" },
+        { icon: "💵", label: "Solución", value: "DINERO" },
+        { icon: "📈", label: "Riesgo", value: "INFLACIÓN" }
+      ]
+    }
+  },
+  // Capítulos 3-5 (placeholder)
   { id: 3, mapTitle: "LA INFLACIÓN", mapDesc: "El ladrón invisible", mapIcon: "📉", title: "CAPÍTULO 3", pages: [], questions: [], victory: { emoji: "📉", title: "¡CAPÍTULO 3!", body: "Próximamente", facts: [] } },
   { id: 4, mapTitle: "BITCOIN COMO DINERO SÓLIDO", mapDesc: "Blockchain y descentralización", mapIcon: "🔗", title: "CAPÍTULO 4", pages: [], questions: [], victory: { emoji: "🔗", title: "¡CAPÍTULO 4!", body: "Próximamente", facts: [] } },
   { id: 5, mapTitle: "CÓMO USAR BITCOIN", mapDesc: "Billeteras y Lightning", mapIcon: "⚡", title: "CAPÍTULO 5", pages: [], questions: [], victory: { emoji: "⚡", title: "¡CAPÍTULO 5!", body: "Próximamente", facts: [] } }
